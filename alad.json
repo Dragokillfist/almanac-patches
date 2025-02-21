@@ -12,5 +12,6 @@
 	"version": "0.1.0b",
 	"dependencies": [
         "Steamodded (>=1.0.0~ALPHA-1326a)"
+		"jen (>=0.1.0-OT5)" 
     ],
 }
