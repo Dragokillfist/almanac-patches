@@ -3754,7 +3754,7 @@ pattern = '''SMODS.Joker {
 position = "after"
 payload = '''
 
-
+--[[
 SMODS.Joker {
 	key = 'lugia',
 	loc_txt = {
@@ -3819,5 +3819,6 @@ SMODS.Joker {
 			return true end)
 		end
 	end
-}'''
+}
+--]]'''
 match_indent = true
