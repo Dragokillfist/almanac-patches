@@ -595,7 +595,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = '''=[SMODS jen "Jen.lua"]'''
-pattern '''SMODS.Edition({
+pattern = '''SMODS.Edition({
     key = "wavy",
     loc_txt = {
         name = "Wavy",
@@ -1117,7 +1117,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = '''=[SMODS jen "Jen.lua"]'''
-pattern '''SMODS.Edition({
+pattern = '''SMODS.Edition({
     key = "sepia",
     loc_txt = {
         name = "Sepia",
@@ -1380,7 +1380,7 @@ payload = '''SMODS.Edition{
 		end
 	end
 }'''
-math_indent = true
+match_indent = true
 
 [[patches]]
 [patches.pattern]
