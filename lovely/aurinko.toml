@@ -1,0 +1,16 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS aurinko "Aurinko.lua"]'''
+pattern = '''if predicted_level < 1 then
+							quota = quota + math.abs(predicted_level) + 1
+						end'''
+position = "at"
+payload = '''if to_big(predicted_level) < to_big(1) then
+                            quota = quota + math.abs(predicted_level) + 1
+                        end'''
+match_indent = true

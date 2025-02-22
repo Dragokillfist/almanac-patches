@@ -158,3 +158,47 @@ payload = '''if fusion then
             card.already_notified = false
         end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''	if v.level > 1 then
+				levels = levels + math.max(0, v.level - 1)
+				level_up_hand(nil, k, true, -v.level + 1, true, true)
+			end'''
+position = "at"
+payload = '''    if to_big(v.level) > to_big(1) then
+                levels = levels + math.max(0, v.level - 1)
+                level_up_hand(nil, k, true, -v.level + 1, true, true)
+            end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''if G.GAME.hands[fav].level > 0 then
+			if hands.backhand then
+				card:do_jen_astronomy(hands.backhand, mod)
+				jl.th(hands.backhand)
+				level_up_hand(card, hands.backhand, nil, mod)
+			end
+			if hands.forehand then
+				card:do_jen_astronomy(hands.forehand, mod)
+				jl.th(hands.forehand)
+				level_up_hand(card, hands.forehand, nil, mod)
+			end
+		end'''
+position = "at"
+payload = '''if to_big(G.GAME.hands[fav].level) > to_big(0) then
+            if hands.backhand then
+                card:do_jen_astronomy(hands.backhand, mod)
+                jl.th(hands.backhand)
+                level_up_hand(card, hands.backhand, nil, mod)
+            end
+            if hands.forehand then
+                card:do_jen_astronomy(hands.forehand, mod)
+                jl.th(hands.forehand)
+                level_up_hand(card, hands.forehand, nil, mod)
+            end
+        end'''
+match_indent = true
