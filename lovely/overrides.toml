@@ -281,7 +281,7 @@ pattern = '''loc_vars = function(self)
         return {vars = {self.config.chips, self.config.mult}}
     end'''
 position = "after"
-payload = '''
+payload = ''',
 	calculate = function(self, card, context)
 		if context.edition and context.cardarea == G.jokers and context.joker_main then
 			return {chips = self.config.chips, mult = self.config.mult}
@@ -526,4 +526,46 @@ payload = '''SMODS.Edition({
 		end
 	end
 })'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''if identical > 0 then
+				play_sound_q('button')
+				jl.hm('x' .. identical)
+				delay(3)
+				for i = 1, identical do
+					cumulative = cumulative + ((2 ^ (i-1))/4)
+					play_sound_q('button', 1.1)
+					jl.hcm('+' .. number_format(cumulative), i == identical and '' or ('x' .. (identical - i)))
+					delay(0.25)
+				end
+				delay(2.75)
+				update_operator_display()
+			else
+				if cumulative <= 0 then jl.hcm('Nope!', 'Nope!') else jl.hc('Nope!') end
+				play_sound_q('timpani')
+				delay(3)
+				update_operator_display()
+			end'''
+position = "at"
+payload = '''if to_big(identical) > to_big(0) then
+				play_sound_q('button')
+				jl.hm('x' .. identical)
+				delay(3)
+				for i = 1, identical do
+					cumulative = cumulative + ((2 ^ (i-1))/4)
+					play_sound_q('button', 1.1)
+					jl.hcm('+' .. number_format(cumulative), i == identical and '' or ('x' .. (identical - i)))
+					delay(0.25)
+				end
+				delay(2.75)
+				update_operator_display()
+			else
+				if to_big(cumulative) <= to_big(0) then jl.hcm('Nope!', 'Nope!') else jl.hc('Nope!') end
+				play_sound_q('timpani')
+				delay(3)
+				update_operator_display()
+			end'''
 match_indent = true
