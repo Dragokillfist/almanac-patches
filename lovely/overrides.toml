@@ -1920,7 +1920,7 @@ payload = '''SMODS.Edition {
 			'{C:dark_edition,s:0.7,E:2}Shader by : Oiiman'
         }
     },
-    shader = "cosmic",
+    shader = "blood",
     discovered = true,
     unlocked = true,
     config = {ee_mult = 1.2},
@@ -3537,6 +3537,14 @@ payload = '''SMODS.Joker {
 			'{C:dark_edition,s:0.7,E:2}Face art by : ocksie',
 		}
 	},
+	misc_badge = {
+		colour = G.C.almanac,
+		text_colour = G.C.CRY_BLOSSOM,
+		text = {
+			'Disciple of Kosmos',
+			'ocksie'
+		}
+	},
 	config = {steel = 1.5},
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0 },
@@ -3565,5 +3573,101 @@ payload = '''SMODS.Joker {
 			end
 		end
 	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''local shaders = {
+	'chromatic',
+	'gilded',
+	'laminated',
+	'reversed',
+	'sepia',
+	'wavy',
+	'dithered',
+	'watered',
+	'sharpened',
+	'missingtexture',
+	'prismatic',
+	'polygloss',
+	'ink',
+	'strobe',
+	'sequin',
+	'blaze',
+	'encoded',
+	'misprint',
+	--'graymatter',
+	--'hardstone',
+	--'bedrock',
+	'bismuth',
+	'unreal',
+	'ionized',
+	'diplopia',
+	'moire'
+}
+
+local shaders2 = {
+	'bloodfoil',
+	'cosmic',
+	'shaderpack_1',
+	'shaderpack_4',
+	'cosmicsparkles_magenta',
+	'cosmicsparkles_red',
+	'cosmicsparkles_yellow',
+	'hell',
+	'wtfwave'
+}
+
+local shaders3 = {
+	'wee',
+	'jumbo'
+}'''
+position = "at"
+payload = '''local shaders = {
+	'chromatic',
+	'gilded',
+	'laminated',
+	'reversed',
+	'sepia',
+	'wavy',
+	'dithered',
+	'watered',
+	'sharpened',
+	'missingtexture',
+	'prismatic',
+	'polygloss',
+	'ink',
+	'strobe',
+	'sequin',
+	'blaze',
+	'encoded',
+	'misprint',
+	--'graymatter',
+	--'hardstone',
+	--'bedrock',
+	'bismuth',
+	'unreal',
+	'ionized',
+	'diplopia',
+	'moire'
+}
+
+local shaders2 = {
+	'bloodfoil',
+	'blood',
+	'shaderpack_1',
+	'shaderpack_4',
+	'cosmicsparkles_magenta',
+	'cosmicsparkles_red',
+	'cosmicsparkles_yellow',
+	'hell',
+	'wtfwave'
+}
+
+local shaders3 = {
+	'wee',
+	'jumbo'
 }'''
 match_indent = true
