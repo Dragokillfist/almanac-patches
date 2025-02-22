@@ -202,3 +202,328 @@ payload = '''if to_big(G.GAME.hands[fav].level) > to_big(0) then
             end
         end'''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "dithered",
+    loc_txt = {
+        name = "Dithered",
+        label = "Dithered",
+        text = {
+            "{C:red}#1#{} Chips",
+            "{C:mult}+#2#{} Mult",
+			'{C:dark_edition,s:0.7,E:2}Shader by : stupxd'
+        }
+    },
+    discovered = true,
+    unlocked = true,
+    shader = 'dithered',
+    config = {chips = -25, mult = 33},
+	sound = {
+		sound = 'jen_e_dithered',
+		per = 1,
+		vol = 0.6
+	},
+    in_shop = true,
+    weight = 8,
+    extra_cost = 2,
+    apply_to_float = false,
+    loc_vars = function(self)
+        return {vars = {self.config.chips, self.config.mult}}
+    end
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+    key = "dithered",
+    loc_txt = {
+        name = "Dithered",
+        label = "Dithered",
+        text = {
+            "{C:red}#1#{} Chips",
+            "{C:mult}+#2#{} Mult",
+			'{C:dark_edition,s:0.7,E:2}Shader by : stupxd'
+        }
+    },
+    discovered = true,
+    unlocked = true,
+    shader = 'dithered',
+    config = {chips = -25, mult = 33},
+	sound = {
+		sound = 'jen_e_dithered',
+		per = 1,
+		vol = 0.6
+	},
+    in_shop = true,
+    weight = 8,
+    extra_cost = 2,
+    apply_to_float = false,
+    loc_vars = function(self)
+        return {vars = {self.config.chips, self.config.mult}}
+    end,
+	calculate = function(self, card, context)
+		if context.edition and context.cardarea == G.jokers and context.joker_main then
+			return {chips = self.config.chips, mult = self.config.mult}
+		end
+		if context.main_scoring and context.cardarea == G.play then
+			return {chips = self.config.chips, mult = self.config.mult}
+		end
+	end
+})'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''loc_vars = function(self)
+        return {vars = {self.config.chips, self.config.mult}}
+    end'''
+position = "after"
+payload = '''
+	calculate = function(self, card, context)
+		if context.edition and context.cardarea == G.jokers and context.joker_main then
+			return {chips = self.config.chips, mult = self.config.mult}
+		end
+		if context.main_scoring and context.cardarea == G.play then
+			return {chips = self.config.chips, mult = self.config.mult}
+		end
+	end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "prismatic",
+    loc_txt = {
+        name = "Prismatic",
+        label = "Prismatic",
+        text = {
+            "{X:mult,C:white}x#1#{C:mult} Mult{}, {X:chips,C:white}x#2#{C:chips} Chips",
+			'and {C:money}+$#3#{} when scored',
+			'{C:dark_edition,s:0.7,E:2}Shader by : Oiiman'
+        }
+    },
+    shader = "prismatic",
+    discovered = true,
+    unlocked = true,
+    config = {x_mult = 15, x_chips = 5, p_dollars = 5},
+	sound = {
+		sound = 'jen_e_prismatic',
+		per = 1.2,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 0.2,
+    extra_cost = 12,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_vars = function(self)
+        return { vars = { self.config.x_mult, self.config.x_chips, self.config.p_dollars } }
+    end
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+    key = "prismatic",
+    loc_txt = {
+        name = "Prismatic",
+        label = "Prismatic",
+        text = {
+            "{X:mult,C:white}x#1#{C:mult} Mult{}, {X:chips,C:white}x#2#{C:chips} Chips{}",
+			'and {C:money}+$#3#{} when scored',
+			'{C:dark_edition,s:0.7,E:2}Shader by : Oiiman'
+        }
+    },
+    shader = "prismatic",
+    discovered = true,
+    unlocked = true,
+    config = {x_mult = 15, x_chips = 5, p_dollars = 5},
+	sound = {
+		sound = 'jen_e_prismatic',
+		per = 1.2,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 0.2,
+    extra_cost = 12,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_vars = function(self)
+        return { vars = { self.config.x_mult, self.config.x_chips, self.config.p_dollars } }
+    end,
+	calculate = function(self, card, context)
+		if context.edition and context.cararea == G.jokers and context.joker_main then
+			return {x_mult = self.config.x_mult, x_chips = self.config.x_chips, dollars = self.config.p_dollars}
+		end
+		if context.main_scoring and context.cararea == G.play then
+			return {x_mult = self.config.x_mult, x_chips = self.config.x_chips, dollars = self.config.p_dollars}
+		end
+	end
+})'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "ionized",
+    loc_txt = {
+        name = "Ionised",
+        label = "Ionised",
+        text = {
+            "{C:blue}+#1# Chips{}, {C:red,s:1.2}BUT",
+			"{X:red,C:white}x#2#{C:red} Mult",
+			'{C:dark_edition,s:0.7,E:2}Shader by : Oiiman'
+        }
+    },
+    shader = "ionized",
+    discovered = true,
+    unlocked = true,
+    config = {chips = 2000, x_mult = 0.5},
+	sound = {
+		sound = 'jen_e_ionized',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 3,
+    extra_cost = 7,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_vars = function(self)
+        return { vars = { self.config.chips, self.config.x_mult } }
+    end
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+	key = "ionized",
+	loc_txt = {
+		name = "Ionised",
+		label = "Ionised",
+		text = {
+			"{C:blue}+#1# Chips{}, {C:red,s:1.2}BUT",
+			"{X:red,C:white}x#2#{C:red} Mult",
+			'{C:dark_edition,s:0.7,E:2}Shader by : Oiiman'
+		}
+	},
+	shader = "ionized",
+	discovered = true,
+	unlocked = true,
+	config = {chips = 2000, x_mult = 0.5},
+	sound = {
+		sound = 'jen_e_ionized',
+		per = 1,
+		vol = 0.5
+	},
+	in_shop = true,
+	weight = 3,
+	extra_cost = 7,
+	apply_to_float = false,
+	get_weight = function(self)
+		return G.GAME.edition_rate * self.weight
+	end,
+	loc_vars = function(self)
+		return { vars = { self.config.chips, self.config.x_mult } }
+	end,
+	calculate = function(self, card, context)
+		if context.edition and context.cararea == G.jokers and context.joker_main then
+			return {chips = self.config.chips, x_mult = self.config.x_mult}
+		end
+		if context.main_scoring and context.cararea == G.play then
+			return {chips = self.config.chips, x_mult = self.config.x_mult}
+		end
+	end
+})'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "blaze",
+    loc_txt = {
+        name = "Blaze",
+        label = "Blaze",
+        text = {
+			'Retrigger this card {C:attention}#1#{} time(s), {C:red,s:1.2}BUT',
+            "{C:red}#2#{C:chips} Chips{} and {C:red}#3#{C:mult} Mult",
+			'{C:dark_edition,s:0.7,E:2}Shader by : stupxd'
+        }
+    },
+    shader = "blaze",
+    discovered = true,
+    unlocked = true,
+    config = {retriggers = 5, chips = -5, mult = -1},
+	sound = {
+		sound = 'jen_e_blaze',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 5,
+    extra_cost = 7,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_vars = function(self)
+        return { vars = { self.config.retriggers, self.config.chips, self.config.mult } }
+    end
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+    key = "blaze",
+    loc_txt = {
+        name = "Blaze",
+        label = "Blaze",
+        text = {
+			'Retrigger this card {C:attention}#1#{} time(s), {C:red,s:1.2}BUT',
+            "{C:red}#2#{C:chips} Chips{} and {C:red}#3#{C:mult} Mult",
+			'{C:dark_edition,s:0.7,E:2}Shader by : stupxd'
+        }
+    },
+    shader = "blaze",
+    discovered = true,
+    unlocked = true,
+    config = {retriggers = 5, chips = -5, mult = -1},
+	sound = {
+		sound = 'jen_e_blaze',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 5,
+    extra_cost = 7,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_vars = function(self)
+        return { vars = { self.config.retriggers, self.config.chips, self.config.mult } }
+    end,
+	calculate = function(self, card, context)
+		if context.edition and context.cardarea == G.jokers and context.joker_main then
+			return {
+				retriggers = self.config.retriggers,
+				chips = self.config.chips,
+				mult = self.config.mult
+			}
+		end
+		if context.repetition and context.cardarea == G.play then
+			return {
+				repetitions = self.config.retriggers,
+				chips = self.config.chips,
+				mult = self.config.mult
+			}
+		end
+	end
+})'''
+match_indent = true
