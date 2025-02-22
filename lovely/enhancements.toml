@@ -1,0 +1,305 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''for k, v in ipairs(handinacard) do
+	SMODS.Enhancement {
+		key = string.lower(v[2]),
+		loc_txt = {
+			name = v[2] .. ' Card',
+			text = {
+				'Gives the {C:chips}Chips{} & {C:mult}Mult{} of {C:attention}' .. v[1] .. '{},',
+				'then is {C:red}destroyed{} after scoring is finished',
+				' ',
+				'{C:inactive,s:1.5}({X:chips,C:white,s:1.5}#1#{s:1.5} & {X:mult,C:white,s:1.5}#2#{C:inactive,s:1.5})',
+				'{C:cry_epic,s:0.6,E:1}Hand Card{}'
+			}
+		},
+		disposable = true,
+		pos = { x = k - 1, y = 2 },
+		atlas = 'jenenhance',
+		unlocked = true,
+		discovered = true,
+		loc_vars = function(self, info_queue, center)
+			local tbl = ((G.GAME or {}).hands or {})[v[1]] or {}
+			return {vars = {tbl.chips or '???', tbl.mult or '???'}}
+		end,
+		calculate = function(self, card, context, effect)
+			if jl.sc(context) then
+				local tbl = ((G.GAME or {}).hands or {})[v[1]] or {}
+				if tbl and next(tbl) then
+					if not card.cashed_out then
+						card.cashed_out = true
+					end
+					effect.chips = (effect.chips or to_big(0)) + tbl.chips
+					effect.mult = (effect.mult or to_big(0)) + tbl.mult
+				end
+			end
+		end
+	}
+end'''
+position = "at"
+payload = '''for k, v in ipairs(handinacard) do
+	SMODS.Enhancement {
+		key = string.lower(v[2]),
+		loc_txt = {
+			name = v[2] .. ' Card',
+			text = {
+				'Gives the {C:chips}Chips{} & {C:mult}Mult{} of {C:attention}' .. v[1] .. '{},',
+				'then is {C:red}destroyed{} after scoring is finished',
+				' ',
+				'{C:inactive,s:1.5}({X:chips,C:white,s:1.5}#1#{s:1.5} & {X:mult,C:white,s:1.5}#2#{C:inactive,s:1.5})',
+				'{C:cry_epic,s:0.6,E:1}Hand Card'
+			}
+		},
+		disposable = true,
+		pos = { x = k - 1, y = 2 },
+		atlas = 'jenenhance',
+		unlocked = true,
+		discovered = true,
+		loc_vars = function(self, info_queue, center)
+			local tbl = ((G.GAME or {}).hands or {})[v[1]] or {}
+			return {vars = {tbl.chips or '???', tbl.mult or '???'}}
+		end,
+		calculate = function(self, card, context)
+			if context.destroy_card and context.cardarea == G.play and context.scoring_hand then
+				local tbl = ((G.GAME or {}).hands or {})[v[1]] or {}
+				if tbl and next(tbl) then
+					if not card.cashed_out then
+						card.cashed_out = true
+					end
+					return {
+						chips = tbl.chips,
+						mult = tbl.mult,
+						remove = true
+					}
+				end
+			end
+		end
+	}
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Enhancement {
+	key = 'cash',
+	loc_txt = {
+		name = 'Cash Card',
+		text = {
+			'{C:money}+$#1#{} when scored',
+			'{C:red}Destroyed{} after scoring',
+			'{C:cry_exotic,s:0.6,E:1}Power Card{}'
+		}
+	},
+	config = {p_dollars = 10},
+	disposable = true,
+	pos = { x = 4, y = 1 },
+	atlas = 'jenenhance',
+	unlocked = true,
+	discovered = true,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {((center or {}).ability or {}).p_dollars}}
+	end
+}'''
+position = "at"
+payload = '''SMODS.Enhancement {
+	key = 'cash',
+	loc_txt = {
+		name = 'Cash Card',
+		text = {
+			'{C:money}+$#1#{} when scored',
+			'{C:red}Destroyed{} after scoring',
+			'{C:cry_exotic,s:0.6,E:1}Power Card'
+		}
+	},
+	config = {p_dollars = 10},
+	disposable = true,
+	pos = { x = 4, y = 1 },
+	atlas = 'jenenhance',
+	unlocked = true,
+	discovered = true,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {((center or {}).ability or {}).p_dollars}}
+	end,
+	calculate = function(self, card, context)
+		if context.destroy_card and context.cardarea == G.play and context.scoring_hand then
+			G.GAME.p_dollars = (G.GAME.p_dollars or 0) + self.config.p_dollars
+			return {remove = true}
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Enhancement {
+	key = 'handy',
+	loc_txt = {
+		name = 'Handy Card',
+		text = {
+			'{C:blue}+1{} hand this round',
+			'{C:red}Destroyed{} after scoring',
+			'{C:cry_exotic,s:0.6,E:1}Power Card{}'
+		}
+	},
+	disposable = true,
+	pos = { x = 1, y = 1 },
+	atlas = 'jenenhance',
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context, effect)
+		if jl.sc(context) then
+			ease_hands_played(1)
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Enhancement {
+	key = 'handy',
+	loc_txt = {
+		name = 'Handy Card',
+		text = {
+			'{C:blue}+1{} hand this round',
+			'{C:red}Destroyed{} after scoring',
+			'{C:cry_exotic,s:0.6,E:1}Power Card'
+		}
+	},
+	disposable = true,
+	pos = { x = 1, y = 1 },
+	atlas = 'jenenhance',
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context)
+		if context.destroy_card and context.cardarea == G.play and context.scoring_hand then
+			ease_hands_played(1)
+			return {remove = true}
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Enhancement {
+	key = 'fizzy',
+	loc_txt = {
+		name = 'Fizzy Card',
+		text = {
+			'Creates a {C:attention}Double Tag{}',
+			'{C:red}Destroyed{} after scoring',
+			'{C:cry_exotic,s:0.6,E:1}Power Card{}'
+		}
+	},
+	disposable = true,
+	pos = { x = 8, y = 1 },
+	atlas = 'jenenhance',
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context, effect)
+		if jl.sc(context) then
+			G.E_MANAGER:add_event(Event({trigger = 'after', func = function()
+				add_tag(Tag('tag_double'))
+				return true
+			end }))
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Enhancement {
+    key = 'fizzy',
+    loc_txt = {
+        name = 'Fizzy Card',
+        text = {
+            'Creates a {C:attention}Double Tag{}',
+            '{C:red}Destroyed{} after scoring',
+            '{C:cry_exotic,s:0.6,E:1}Power Card'
+        }
+    },
+    disposable = true,
+    pos = { x = 8, y = 1 },
+    atlas = 'jenenhance',
+    unlocked = true,
+    discovered = true,
+    calculate = function(self, card, context)
+        if context.destroy_card and context.cardarea == G.play and context.scoring_hand then
+            G.E_MANAGER:add_event(Event({trigger = 'after', func = function()
+                add_tag(Tag('tag_double'))
+                return true
+            end }))
+            return {remove = true}
+        end
+    end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Enhancement {
+	key = 'potassium',
+	loc_txt = {
+		name = 'Potassium Card',
+		text = {
+			'Creates a {C:dark_edition}Negative {C:attention}Gros Michel',
+			'{C:red}Destroyed{} after scoring',
+			'{C:cry_exotic,s:0.6,E:1}Power Card{}'
+		}
+	},
+	disposable = true,
+	pos = { x = 7, y = 1 },
+	atlas = 'jenenhance',
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context, effect)
+		if jl.sc(context) then
+			Q(function()
+				local k19 = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_gros_michel', 'nanner')
+				k19.no_forced_edition = true
+				k19:set_edition({negative = true}, true)
+				k19.no_forced_edition = nil
+				k19:add_to_deck()
+				G.jokers:emplace(k19)
+			return true end)
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Enhancement {
+	key = 'potassium',
+	loc_txt = {
+		name = 'Potassium Card',
+		text = {
+			'Creates a {C:dark_edition}Negative {C:attention}Gros Michel',
+			'{C:red}Destroyed{} after scoring',
+			'{C:cry_exotic,s:0.6,E:1}Power Card'
+		}
+	},
+	disposable = true,
+	pos = { x = 7, y = 1 },
+	atlas = 'jenenhance',
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context)
+		if context.destroy_card and context.cardarea == G.play and context.scoring_hand then
+			Q(function()
+				local k19 = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_gros_michel', 'nanner')
+				k19.no_forced_edition = true
+				k19:set_edition({negative = true}, true)
+				k19.no_forced_edition = nil
+				k19:add_to_deck()
+				G.jokers:emplace(k19)
+				return  true 
+			end)
+			return { remove = true}
+		end
+	end
+}'''
+match_indent = true
