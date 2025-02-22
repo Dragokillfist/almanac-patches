@@ -3769,8 +3769,8 @@ SMODS.Joker {
 			'{C:cry_exotic,s:0.7,E:2}Origin : Pokémon'
 		}
 	},
-	pos = { x = 11, y = 0 },
-	soul_pos = { x = 11, y = 0 },
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
 	cost = 50,
 	rarity = 'cry_exotic',
 	misc_badge = {
@@ -3786,7 +3786,7 @@ SMODS.Joker {
 	unique = true,
 	eternal_compat = true,
 	perishable_compat = false,
-	atlas = 'jenpickel',
+	atlas = 'jenlugia',
     calculate = function(self, card, context)
 		if not context.blueprint and jl.njr(context) and context.setting_blind then
 			card:speak('+CCD Voucher')
