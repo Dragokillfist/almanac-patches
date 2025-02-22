@@ -2299,3 +2299,394 @@ payload = '''use = function(self, card, area, copier)
 				end
 			end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''function Card:draw(layer)
+	local CEN = self.gc and self:gc()
+	if CEN then
+		if (self.facing or '') == 'front' then
+			if self.config then
+				local should_scare = not CEN.cant_scare and ((Jen.gods() and CEN.fusable) or Jen.sinister)
+				local should_scare2 = not CEN.cant_scare and ((Jen.gods() and CEN.fusable) or Jen.dramatic)
+				if self.edition then
+					if self.edition.jen_bismuth then
+						self.edition.retriggers = bismuth_retriggers()
+					end
+				end
+				if CEN.key == 'j_jen_dandy' and math.random(800) == 1 then
+					self.dandy_glitch = math.random(10, 80)
+					if self.children then
+						if self.children.center then
+							self.children.center:set_sprite_pos({x = 0, y = 1})
+						end
+						if self.children.floating_sprite then
+							self.children.floating_sprite:set_sprite_pos({x = 1, y = 1})
+						end
+					end
+				elseif self.dandy_glitch then
+					if self.dandy_glitch <= 1 then
+						if self.children then
+							if self.children.center then
+								self.children.center:set_sprite_pos({x = 0, y = 0})
+							end
+							if self.children.floating_sprite then
+								self.children.floating_sprite:set_sprite_pos({x = 1, y = 0})
+							end
+						end
+						self.dandy_glitch = nil
+					else
+						self.dandy_glitch = self.dandy_glitch - 1
+					end
+				end
+				if not CEN.update and self.children.floating_sprite then
+					if ((CEN.drama and should_scare2) or (CEN.sinis and should_scare)) and (CEN.sinis or CEN.drama) and not self.in_drama_state then
+						self.in_drama_state = true
+						self.children.floating_sprite:set_sprite_pos(CEN.drama or CEN.sinis)
+					elseif not ((CEN.drama and should_scare2) or (CEN.sinis and should_scare)) and self.in_drama_state then
+						self.in_drama_state = nil
+						self.children.floating_sprite:set_sprite_pos(CEN.soul_pos)
+					end
+				end
+				if self.in_drama_state then
+					self:juice_up(0, math.random()/(Jen.dramatic and 3 or 6))
+				end
+				if self.area and next(self.area) then
+					if self.ability and CEN.permaeternal and not self.ability.eternal and G.jokers and self.area == G.jokers then
+						self.ability.eternal = true
+					end
+					if CEN.key == 'c_cry_pointer' and G.hand and self.area == G.hand and not self.lolnocryptidingpointerforyou then
+						self.lolnocryptidingpointerforyou = true
+						self:destroy()
+						local pointer = create_card('Code', G.consumeables, nil, nil, nil, nil, 'c_cry_pointer', 'fuck_cryptiding_pointer_because_there_is_no_need_for_a_budget_creative_mode_please_come_the_fuck_on')
+						pointer.no_omega = true
+						pointer:add_to_deck()
+						G.consumeables:emplace(pointer)
+					end
+				end
+				if CEN.gloss then
+					if CEN.gloss_contrast then
+						for i = 1, CEN.gloss_contrast do
+							self.children.center:draw_shader(type(CEN.gloss) == 'string' and CEN.gloss or 'voucher', nil, self.ARGS.send_to_shader)
+						end
+					else
+						self.children.center:draw_shader(type(CEN.gloss) == 'string' and CEN.gloss or 'voucher', nil, self.ARGS.send_to_shader)
+					end
+				end
+				if (self.added_to_deck or (self.area and self.area == G.hand)) and not self.edition then
+					if not CEN.ignore_kudaai and Jen.kudaai_active and (CEN.set ~= 'Booster' or self.area == G.consumeables) and not CEN.cannot_edition then
+						self:set_edition({[random_editions[pseudorandom('kudaai_edition', 1, #random_editions)]] = true}, true)
+					end
+				end
+				if Jen.luke_active and self.ability and CEN.key ~= 'j_jen_hunter' and CEN.key ~= 'j_jen_luke' and CEN.set ~= 'jen_jokerability' then
+					self.ability.cry_rigged = true
+				end
+			end
+		else
+			if CEN.key == 'c_cry_pointer' and G.hand and self.area == G.hand and not self.lolnocryptidingpointerforyou then
+				self.lolnocryptidingpointerforyou = true
+				self:destroy()
+				local pointer = create_card('Code', G.consumeables, nil, nil, nil, nil, 'c_cry_pointer', 'fuck_cryptiding_pointer_because_there_is_no_need_for_a_budget_creative_mode_please_come_the_fuck_on')
+				pointer.no_omega = true
+				pointer:add_to_deck()
+				G.consumeables:emplace(pointer)
+			end
+		end
+	end
+	CEN = nil
+    card_draw_ref(self, layer)
+end'''
+position = "at"
+payload = '''function Card:draw(layer)
+	if (self.facing or '') == 'front' then
+		if self.config then
+			if self.edition then
+				if self.edition.jen_bismuth then
+					self.edition.retriggers = bismuth_retriggers()
+				end
+			end
+			if Jen.sinister and G.hand then
+				if (self.highlighted and (self.area or {}) == G.hand) or Jen.dramatic then
+					self:juice_up(0, math.random()/4)
+				end
+			end
+			if self.gc and self:gc() then
+				local CEN = self:gc()
+				if CEN.key == 'j_jen_dandy' and math.random(800) == 1 then
+					self.dandy_glitch = math.random(10, 80)
+					if self.children then
+						if self.children.center then
+							self.children.center:set_sprite_pos({x = 0, y = 1})
+						end
+						if self.children.floating_sprite then
+							self.children.floating_sprite:set_sprite_pos({x = 1, y = 1})
+						end
+					end
+				elseif self.dandy_glitch then
+					if self.dandy_glitch <= 1 then
+						if self.children then
+							if self.children.center then
+								self.children.center:set_sprite_pos({x = 0, y = 0})
+							end
+							if self.children.floating_sprite then
+								self.children.floating_sprite:set_sprite_pos({x = 1, y = 0})
+							end
+						end
+						self.dandy_glitch = nil
+					else
+						self.dandy_glitch = self.dandy_glitch - 1
+					end
+				end
+				if not CEN.update and self.children.floating_sprite then
+					if (CEN.drama and Jen.dramatic or Jen.sinister) and (CEN.sinis or CEN.drama) and not self.in_drama_state then
+						self.in_drama_state = true
+						self.children.floating_sprite:set_sprite_pos(CEN.drama or CEN.senis)
+					elseif not Jen.sinister and self.in_drama_state then
+						self.in_drama_state = nil
+						self.children.floating_sprite:set_sprite_pos(CEN.soul_pos)
+					end
+				end
+				if self.in_drama_state then
+					self:juice_up(0, math.random()/4)
+				end
+				if self.area and next(self.area) then
+					if self.ability and CEN.permaeternal and not self.ability.eternal and G.jokers and self.area == G.jokers then
+						self.ability.eternal = true
+					end
+					if CEN.key == 'c_cry_pointer' and G.hand and self.area == G.hand and not self.lolnocryptidingpointerforyou then
+						self.lolnocryptidingpointerforyou = true
+						self:destroy()
+						local pointer = create_card('Code', G.consumeables, nil, nil, nil, nil, 'c_cry_pointer', 'fuck_cryptiding_pointer_because_there_is_no_need_for_a_budget_creative_mode_please_come_the_fuck_on')
+						pointer.no_omega = true
+						pointer:add_to_deck()
+						G.consumeables:emplace(pointer)
+					end
+				end
+				if CEN.gloss then
+					if CEN.gloss_contrast then
+						for i = 1, CEN.gloss_contrast do
+							self.children.center:draw_shader(type(CEN.gloss) == 'string' and CEN.gloss or 'voucher', nil, self.ARGS.send_to_shader)
+						end
+					else
+						self.children.center:draw_shader(type(CEN.gloss) == 'string' and CEN.gloss or 'voucher', nil, self.ARGS.send_to_shader)
+					end
+				end
+				if (self.added_to_deck or (self.area and self.area == G.hand)) and not self.edition then
+					if Jen.kudaai_active and (CEN.set ~= 'Booster' or self.area == G.consumeables) and not CEN.cannot_edition then
+						self:set_edition({[random_editions[pseudorandom('kudaai_edition', 1, #random_editions)]] = true}, true)
+					end
+				end
+				if Jen.luke_active and self.ability and CEN.key ~= 'j_jen_hunter' and CEN.key ~= 'j_jen_luke' and CEN.set ~= 'jen_jokerability' then
+					self.ability.cry_rigged = true
+				end
+				CEN = nil
+			end
+		end
+	end
+    card_draw_ref(self, layer)
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'saint',
+	loc_txt = {
+		name = 'The Saint',
+		text = {
+			'{C:spectral}Gateway{} will {C:attention}not destroy Jokers{} when used',
+			'After using {C:attention}' .. tostring(max_karma) .. ' {C:spectral}Gateways{}, {C:jen_RGB}attune{} this Joker',
+			'{C:inactive,s:1.5}[{C:attention,s:1.5}#1#{C:inactive,s:1.5}/' .. tostring(max_karma) .. ']',
+			faceart('jenwalter666'),
+			origin('Rain World')
+		}
+	},
+	config = {extra = {karma = 0}},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 20,
+	rarity = 4,
+	unlocked = true,
+	discovered = true,
+	immutable = true,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = false,
+	wee_incompatible = true,
+	atlas = 'jensaint',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.karma}}
+    end,
+	calculate = function(self, card, context)
+        if not context.blueprint and jl.njr(context) and context.using_consumeable and context.consumeable and context.consumeable:gc().key == 'c_cry_gateway' then
+			local quota = context.consumeable:getEvalQty()
+			card.ability.extra.karma = card.ability.extra.karma + quota
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = '+' .. quota .. ' Karma', colour = G.C.PALE_GREEN})
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = (tostring(card.ability.extra.karma) .. ' / ' .. tostring(max_karma)), colour = G.C.GREEN})
+			if card.ability.extra.karma >= max_karma then
+				card_status_text(card, '!!!', nil, 0.05*card.T.h, G.C.DARK_EDITION, 0.6, 0.6, 2, 2, 'bm', 'jen_enlightened')
+				G.E_MANAGER:add_event(Event({
+					delay = 0.1,
+					func = function()
+						card:flip()
+						play_sound('card1')
+						return true
+					end
+				}))
+				G.E_MANAGER:add_event(Event({
+					delay = 1,
+					func = function()
+						card:flip()
+						card:juice_up(1, 1)
+						play_sound('card1')
+						card:set_ability(G.P_CENTERS['j_jen_saint_attuned'])
+						return true
+					end
+				}))
+			end
+        end
+	end
+}
+
+SMODS.Joker {
+	key = 'saint_attuned',
+	loc_txt = {
+		name = 'The Saint {C:jen_RGB}(Attuned)',
+		text = {
+			'{C:spectral}Gateway{} will {C:attention}not destroy Jokers{} when used',
+			'{C:cry_ascendant}Yawetag{} also has {C:attention}no negative effect{} when used',
+			'{X:black,C:red,s:3}^^^#1#{C:purple} Chips & Mult',
+			faceart('jenwalter666'),
+			origin('Rain World')
+		}
+	},
+	config = {extra = {ascension = 3}},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 2, y = 0 },
+	cost = 100,
+	rarity = 'jen_transcendent',
+	unlocked = true,
+	discovered = true,
+	no_doe = true,
+	immutable = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jensaint',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.ascension}}
+    end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			return {
+				message = '^^^' .. card.ability.extra.ascension .. ' Chips & Mult',
+				EEEmult_mod = card.ability.extra.ascension,
+				EEEchip_mod = card.ability.extra.ascension,
+				colour = G.C.BLACK,
+				card = card
+			}, true
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'saint',
+	loc_txt = {
+		name = 'The Saint',
+		text = {
+			'{C:spectral}Gateway{} will {C:attention}not destroy Jokers{} when used',
+			'After using {C:attention}' .. tostring(max_karma) .. ' {C:spectral}Gateways{}, {C:jen_RGB}attune{} this Joker',
+			'{C:inactive,s:1.5}[{C:attention,s:1.5}#1#{C:inactive,s:1.5}/' .. tostring(max_karma) .. ']',
+			'{C:dark_edition,s:0.7,E:2}Face art by : jenwalter666',
+			'{C:cry_exotic,s:0.7,E:2}Origin : Rain World'
+		}
+	},
+	config = {extra = {karma = 0}},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 20,
+	rarity = 4,
+	unlocked = true,
+	discovered = true,
+	immutable = true,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jensaint',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.karma}}
+    end,
+	calculate = function(self, card, context)
+        if not context.blueprint and jl.njr(context) and context.using_consumeable and context.consumeable and context.consumeable:gc().key == 'c_cry_gateway' then
+			local quota = context.consumeable:getEvalQty()
+			card.ability.extra.karma = card.ability.extra.karma + quota
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = '+' .. quota .. ' Karma', colour = G.C.PALE_GREEN})
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = (tostring(card.ability.extra.karma) .. ' / ' .. tostring(max_karma)), colour = G.C.GREEN})
+			if card.ability.extra.karma >= max_karma then
+				card_status_text(card, '!!!', nil, 0.05*card.T.h, G.C.DARK_EDITION, 0.6, 0.6, 2, 2, 'bm', 'jen_enlightened')
+				G.E_MANAGER:add_event(Event({
+					delay = 0.1,
+					func = function()
+						card:flip()
+						play_sound('card1')
+						return true
+					end
+				}))
+				G.E_MANAGER:add_event(Event({
+					delay = 1,
+					func = function()
+						card:flip()
+						card:juice_up(1, 1)
+						play_sound('card1')
+						card:set_ability(G.P_CENTERS['j_jen_saint_attuned'])
+						return true
+					end
+				}))
+			end
+        end
+	end
+}
+
+SMODS.Joker {
+	key = 'saint_attuned',
+	loc_txt = {
+		name = 'The Saint {C:jen_RGB}(Attuned)',
+		text = {
+			'{C:spectral}Gateway{} will {C:attention}not destroy Jokers{} when used',
+			'{C:cry_ascendant}Yawetag{} also has {C:attention}no negative effect{} when used',
+			'{X:black,C:red,s:3}^^^#1#{C:purple} Chips & Mult',
+			'{C:dark_edition,s:0.7,E:2}Face art by : jenwalter666',
+			'{C:cry_exotic,s:0.7,E:2}Origin : Rain World'
+		}
+	},
+	config = {extra = {ascension = 3}},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 2, y = 0 },
+	cost = 100,
+	rarity = 'jen_transcendent',
+	unlocked = true,
+	discovered = true,
+	no_doe = true,
+	immutable = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jensaint',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.ascension}}
+    end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				message = '^^^' .. card.ability.extra.ascension .. ' Chips & Mult',
+				EEEmult_mod = card.ability.extra.ascension,
+				EEEchip_mod = card.ability.extra.ascension,
+				colour = G.C.BLACK,
+				card = card
+			}, true
+		end
+	end
+}'''
+match_indent = true
