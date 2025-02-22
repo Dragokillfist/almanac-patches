@@ -2690,3 +2690,880 @@ SMODS.Joker {
 	end
 }'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'behemoth',
+	loc_txt = {
+		name = 'Behemoth',
+		text = {
+			'{X:black,C:red,s:3}^^^#1#{C:purple} Chips & Mult{} if played hand',
+			'contains {C:attention}four or more 7s',
+			' ',
+			lore('Like a hibernating bear; lazy and slow, but obliteration is merely a single mistake away.'),
+			caption('Don\'t poke a tiger in its rest; not even a cub...'),
+			faceart('raidoesthings'),
+			au('Prophecy of the Broken Crowns')
+		}
+	},
+	config = {extra = {pentation = 1.77}},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	misc_badge = sevensins.behemoth,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	immutable = true,
+	atlas = 'jenbehemoth',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.pentation}}
+    end,
+    calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			local cards = G.play.cards
+			local sevens = 0
+			for k, v in pairs(cards) do
+				if v:get_id() == 7 then
+					sevens = sevens + 1
+					if sevens >= 4 then break end
+				end
+			end
+			if sevens >= 4 then
+				return {
+					message = 'Hrraaaaagh!!! (^^^' .. card.ability.extra.pentation .. ' Chips & Mult)',
+					EEEmult_mod = card.ability.extra.pentation,
+					EEEchip_mod = card.ability.extra.pentation,
+					colour = G.C.BLACK,
+					card = card
+				}, true
+			end
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'behemoth',
+	loc_txt = {
+		name = 'Behemoth',
+		text = {
+			'{X:black,C:red,s:3}^^^#1#{C:purple} Chips & Mult{} if played hand',
+			'contains {C:attention}four or more 7s',
+			' ',
+			"{C:inactive,s:1.11,E:1}Don't poke a tiger in its{}",
+			"{C:inactive,s:1.11,E:1}rest; not even a cub...{}",
+			'{C:dark_edition,s:0.7,E:2}Face art by : raidoesthings'
+		}
+	},
+	config = {extra = {pentation = 1.77}},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	misc_badge = sevensins.behemoth,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	immutable = true,
+	atlas = 'jenbehemoth',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.pentation}}
+    end,
+    calculate = function(self, card, context)
+		if context.joker_main then
+			local cards = G.play.cards
+			local sevens = 0
+			for k, v in pairs(cards) do
+				if v:get_id() == 7 then
+					sevens = sevens + 1
+					if sevens >= 4 then break end
+				end
+			end
+			if sevens >= 4 then
+				return {
+					message = 'Hrraaaaagh!!! (^^^' .. card.ability.extra.pentation .. ' Chips & Mult)',
+					EEEmult_mod = card.ability.extra.pentation,
+					EEEchip_mod = card.ability.extra.pentation,
+					colour = G.C.BLACK,
+					card = card
+				}, true
+			end
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'shikigami',
+	loc_txt = {
+		name = 'Shikigami',
+		text = {
+			'Scored {C:attention}7{}s create',
+			'{C:attention}7 copies{} of themselves',
+			' ',
+			lore('The punching bag of the group, and also the shameful reason of their banishment.'),
+			caption('Why are we cards?? Where even are we?!'),
+			faceart('raidoesthings'),
+			au('Prophecy of the Broken Crowns')
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 20,
+	rarity = 4,
+	misc_badge = sevensins.shikigami,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenshikigami',
+    calculate = function(self, card, context)
+		if not context.blueprint then
+			if context.cardarea == G.play then
+				if context.other_card and not context.other_card:norank() and not context.repetition and context.other_card:get_id() == 7 then
+					local sevens = {}
+					for i = 1, 7 do
+						local seven = copy_card(context.other_card, nil, nil, G.playing_card)
+						seven:add_to_deck()
+						seven:start_materialize()
+						table.insert(sevens, seven)
+					end
+					for k, seven in pairs(sevens) do
+						if seven ~= context.other_card then
+							table.insert(G.playing_cards, seven)
+							G.deck:emplace(seven)
+						end
+					end
+					return nil, true
+				end
+			end
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'shikigami',
+	loc_txt = {
+		name = 'Shikigami',
+		text = {
+			'Scored {C:attention}7{}s create',
+			'{C:attention}7 copies{} of themselves',
+			' ',
+			"{C:inactive,s:1.11,E:1}Why are we cards??{}",
+			"{C:inactive,s:1.11,E:1}Where even are we?!{}",
+			'{C:dark_edition,s:0.7,E:2}Face art by : raidoesthings'
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 20,
+	rarity = 4,
+	misc_badge = sevensins.shikigami,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenshikigami',
+    calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play then
+			if context.other_card:get_id() == 7 then
+				local sevens = {}
+				for i = 1, 7 do
+					local seven = copy_card(context.other_card, nil, nil, G.playing_card)
+					seven:add_to_deck()
+					seven:start_materialize()
+					G.deck.config.card_limit = G.deck.config.card_limit + 1
+					table.insert(sevens, seven)
+				end
+				for k, seven in pairs(sevens) do
+					if seven ~= context.other_card then
+						table.insert(G.playing_cards, seven)
+						G.deck:emplace(seven)
+					end
+				end
+				return nil, true
+			end
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'heisei',
+	loc_txt = {
+		name = 'Heisei',
+		text = {
+			'{C:attention}7{}s raise {C:chips}Chips{} to the {X:dark_edition,C:white}power{} of',
+			'{C:green}1 plus a tenth of your {C:money}money{} when scored,',
+			'{C:red,E:1}but also takes half of your money',
+			'{C:inactive}(No effect if you have $0 or less)',
+			' ',
+			lore('Sly and sneaky; socialising with you one day, pickpocketing you the next.'),
+			caption('Enough about me, what is it that you desire?'),
+			faceart('raidoesthings'),
+			au('Prophecy of the Broken Crowns')
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	misc_badge = sevensins.heisei,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenheisei',
+	immutable = true,
+    calculate = function(self, card, context)
+		if context.cardarea == G.play then
+			if context.other_card and not context.other_card:norank() and jl.scj(context) and context.other_card:get_id() == 7 then
+				local val = G.GAME.dollars
+				if val > 0 then
+					ease_dollars(-math.floor(G.GAME.dollars / 2))
+					return {
+						Echip_mod = (1 + (val/10)),
+						card = card
+					}, true
+				end
+			end
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'heisei',
+	loc_txt = {
+		name = 'Heisei',
+		text = {
+			'{C:attention}7{}s raise {C:chips}Chips{} to the {X:dark_edition,C:white}power{} of',
+			'{C:green}1 plus a tenth of your {C:money}money{} when scored,',
+			'{C:red,E:1}but also takes half of your money',
+			'{C:inactive}(No effect if you have $0 or less)',
+			' ',
+			"{C:inactive,s:1.11,E:1}Enough about me, what{}",
+			"{C:inactive,s:1.11,E:1}is it that you desire?{}",
+			'{C:dark_edition,s:0.7,E:2}Face art by : raidoesthings'
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	misc_badge = sevensins.heisei,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenheisei',
+    calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			if context.other_card:get_id() == 7 then
+				local val = G.GAME.dollars
+				if to_big(val) > to_big(0) then
+					ease_dollars(-math.floor(to_big(G.GAME.dollars) / to_big(2)))
+					return {
+						Echip_mod = (1 + (val/10)),
+						card = card
+					}, true
+				end
+			end
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'hydrangea',
+	loc_txt = {
+		name = 'Hydrangea',
+		text = {
+			'{C:attention}7{}s reduce the {C:attention}current Blind',
+			'by {C:attention}7%{} when scored',
+			' ',
+			lore('A brute with a pinch of impatience, getting on her bad side is not uncommon.'),
+			caption('Whatever you\'re bugging me about better be important...'),
+			faceart('raidoesthings'),
+			au('Prophecy of the Broken Crowns')
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	misc_badge = sevensins.hydrangea,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	immutable = true,
+	atlas = 'jenhydrangea',
+    calculate = function(self, card, context)
+		if context.cardarea == G.play then
+			if context.other_card and not context.other_card:norank() and jl.scj(context) and context.other_card:get_id() == 7 then
+				if (G.SETTINGS.FASTFORWARD or 0) < 1 and (G.SETTINGS.STATUSTEXT or 0) < 2 then
+					card_status_text(card, '-7% Blind Size', nil, 0.05*card.T.h, G.C.FILTER, 0.75, 1, 0.6, nil, 'bm', 'generic1')
+				end
+				change_blind_size(to_big(G.GAME.blind.chips) / to_big(1.07), (G.SETTINGS.FASTFORWARD or 0) > 1, (G.SETTINGS.FASTFORWARD or 0) > 1)
+				return nil, true
+			end
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'hydrangea',
+	loc_txt = {
+		name = 'Hydrangea',
+		text = {
+			'{C:attention}7{}s reduce the {C:attention}current Blind',
+			'by {C:attention}7%{} when scored',
+			' ',
+			"{C:inactive,s:1.11,E:1}Whatever you're bugging me{}",
+			"{C:inactive,s:1.11,E:1}about better be important.{}",
+			'{C:dark_edition,s:0.7,E:2}Face art by : raidoesthings'
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	misc_badge = sevensins.hydrangea,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenhydrangea',
+    calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			if context.other_card:get_id() == 7 then
+				local value = 1.07
+				if (G.SETTINGS.FASTFORWARD or 0) < 1 and (G.SETTINGS.STATUSTEXT or 0) < 2 then
+					card_status_text(card, '-7% Blind Size', nil, 0.05*card.T.h, G.C.FILTER, 0.75, 1, 0.6, nil, 'bm', 'generic1')
+				end
+				G.E_MANAGER:add_event(Event({func = function()
+					G.GAME.blind.chips = G.GAME.blind.chips / value
+					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+					play_sound('timpani')
+					delay(0.4)
+					return true 
+				end}))
+			end
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'roffle',
+	loc_txt = {
+		name = 'Roffle',
+		text = {
+			'Grants {C:green}the Coin',
+			'Whenever any {C:attention}Joker{} is {C:attention}triggered{},',
+			'generate {C:spectral,E:1}Mana{} for {C:green}the Coin',
+			' ',
+			lore('A wise card player. Particularly fond friends with the Wee Joker.'),
+			caption('WEEEEEEEE!!'),
+			faceart('jenwalter666'),
+			'{C:cry_ascendant,E:1}https://www.twitch.tv/roffle'
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	misc_badge = twitch,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	immutable = true,
+	atlas = 'jenroffle',
+	abilitycard = 'c_jen_roffle_c',
+	calculate = function(self, card, context)
+		if context.post_trigger and not context.blueprint and context.other_joker and context.other_joker:gc().key ~= 'j_jen_astro' then
+			for k, v in ipairs(G.consumeables.cards) do
+				if v.gc and v:gc() and v:gc().key == 'c_jen_roffle_c' and not (v.edition or {}).negative then
+					Q(function() card:juice_up(0.5, 0.5) return true end)
+					v.ability.mana = v.ability.mana + 1
+					card.cumulative_mana = (card.cumulative_mana or 0) + 1
+					if card.cumulative_mana <= 1 then
+						QR(function()
+							if card then
+								if card.cumulative_mana then
+									card_eval_status_text(v, 'extra', nil, nil, nil, {message = '+' .. number_format(card.cumulative_mana) .. ' Mana', colour = G.C.SECONDARY_SET.Spectral})
+									card.cumulative_mana = nil
+								end
+							end
+						return true end, 15)
+					end
+					break
+				end
+			end
+		end
+	end,
+}
+
+SMODS.Consumable {
+	key = 'roffle_c',
+	loc_txt = {
+		name = 'The Coin',
+		text = {
+			'{X:spectral,C:white}Mana{} : {C:spectral}#1# {C:inactive}/ #2#',
+			'If {C:dark_edition}Negative{}, add {C:spectral}5 mana{},',
+			'Otherwise, spend mana to {C:attention}defeat the blind instantly',
+			faceart('jenwalter666'),
+			origin('Hearthstone')
+		}
+	},
+	config = {mana = 0},
+	set = 'jen_jokerability',
+	permaeternal = true,
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 0,
+	unlocked = true,
+	discovered = true,
+	hidden = true,
+	hidden2 = true,
+	no_doe = true,
+	soul_rate = 0,
+	atlas = 'jenroffle_c',
+    loc_vars = function(self, info_queue, center)
+		local isneg = ((center or {}).edition or {}).negative
+        return {vars = {isneg and '---' or center.ability.mana, (G.GAME or {}).roffle_manareq or Jen.config.mana_cost}}
+    end,
+	can_use = function(self, card)
+		return (((card.edition or {}).negative or card.ability.mana >= ((G.GAME or {}).roffle_manareq or Jen.config.mana_cost)) and abletouseabilities()) and G.GAME.blind
+	end,
+	keep_on_use = function(self, card)
+		return #SMODS.find_card('j_jen_roffle') > 0 and not (card.edition or {}).negative
+	end,
+	use = function(self, card, area, copier)
+		if not G.GAME.roffle_manareq then G.GAME.roffle_manareq = Jen.config.mana_cost end
+		if (card.edition or {}).negative then
+			for k, v in ipairs(G.consumeables.cards) do
+				if v.gc and v:gc() and v:gc().key == 'c_jen_roffle_c' and not (v.edition or {}).negative then
+					v.ability.mana = v.ability.mana + 5
+					card_eval_status_text(v, 'extra', nil, nil, nil, {message = '+5 Mana', colour = G.C.SECONDARY_SET.Spectral})
+					break
+				end
+			end
+		elseif card.ability.mana >= G.GAME.roffle_manareq then
+			card.ability.mana = card.ability.mana - G.GAME.roffle_manareq
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = '-' .. number.format(G.GAME.roffle_manareq) .. ' Mana', colour = G.C.RED})
+			G.GAME.roffle_manareq = G.GAME.roffle_manareq * 2
+			Q(function()
+				Q(function()
+					Q(function()
+						Q(function()
+							G.GAME.chips = G.GAME.blind.chips
+							G.STATE = G.STATES.HAND_PLAYED
+							G.STATE_COMPLETE = true
+							end_round()
+						return true end)
+						jl.ch()
+					return true end)
+				return true end)
+			return true end)
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'roffle',
+	loc_txt = {
+		name = 'Roffle',
+		text = {
+			'Grants {C:green}the Coin',
+			'Whenever any {C:attention}Joker{} is {C:attention}triggered{},',
+			'generate {C:spectral,E:1}Mana{} for {C:green}the Coin',
+			' ',
+			'{C:inactive,E:1}Keep the Coin on hand, you never know',
+			'{C:inactive,E:1}when you might need that extra mana.',
+			'{C:dark_edition,s:0.7,E:2}Face art by : jenwalter666',
+			'{C:cry_ascendant,E:1}https://www.twitch.tv/roffle'
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 20,
+	rarity = 4,
+	misc_badge = twitch,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	immutable = true,
+	atlas = 'jenroffle',
+	abilitycard = 'c_jen_roffle_c',
+	calculate = function(self, card, context)
+		if not context.blueprint and context.post_trigger and context.other_joker ~= self then
+			for k, v in ipairs(G.consumeables.cards) do
+				if v.gc and v:gc() and v:gc().key == 'c_jen_roffle_c' and not (v.edition or {}).negative then
+					Q(function() card:juice_up(0.5, 0.5) return true end)
+					v.ability.mana = v.ability.mana + 1
+					card_eval_status_text(v, 'extra', nil, nil, nil, {message = '+1 Mana', colour = G.C.SECONDARY_SET.Spectral})
+					break
+				end
+			end
+		end
+	end,
+}
+
+SMODS.Consumable {
+	key = 'roffle_c',
+	loc_txt = {
+		name = 'The Coin',
+		text = {
+			'{X:spectral,C:white}Mana{} : {C:spectral}#1#',
+			'{C:green}#2#',
+		}
+	},
+	config = {mana = 0},
+	set = 'jen_jokerability',
+	permaeternal = true,
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 0,
+	unlocked = true,
+	discovered = true,
+	hidden = true,
+	no_doe = true,
+	soul_rate = 0,
+	atlas = 'jenroffle_c',
+    loc_vars = function(self, info_queue, center)
+		local isneg = ((center or {}).edition or {}).negative
+        return {vars = {isneg and '---' or center.ability.mana, isneg and 'Adds +5 Mana to The Coin (non-negative)' or 'Spend ' .. Jen.config.mana_cost .. ' Mana for +1 hand this round'}}
+    end,
+	can_use = function(self, card)
+		return ((card.edition or {}).negative or card.ability.mana >= Jen.config.mana_cost) and abletouseabilities()
+	end,
+	keep_on_use = function(self, card)
+		return #SMODS.find_card('j_jen_roffle') > 0 and not (card.edition or {}).negative
+	end,
+	use = function(self, card, area, copier)
+		if (card.edition or {}).negative then
+			for k, v in ipairs(G.consumeables.cards) do
+				if v.gc and v:gc() and v:gc().key == 'c_jen_roffle_c' and not (v.edition or {}).negative then
+					v.ability.mana = v.ability.mana + 5
+					card_eval_status_text(v, 'extra', nil, nil, nil, {message = '+5 Mana', colour = G.C.SECONDARY_SET.Spectral})
+					break
+				end
+			end
+		elseif card.ability.mana >= Jen.config.mana_cost then
+			card.ability.mana = card.ability.mana - Jen.config.mana_cost
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = '-' .. Jen.config.mana_cost .. ' Mana', colour = G.C.RED})
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = '+1 Hand', colour = G.C.BLUE})
+			ease_hands_played(1)
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'cheese',
+	loc_txt = {
+		name = 'Cheese',
+		text = {
+			'{C:blue}+#1#{} hand(s) if played',
+			'hand is your {C:attention}most played',
+			'{C:inactive}(#2#)',
+			' ',
+			caption('#3#'),
+			faceart('idot1537'),
+			origin('Rain World')
+		}
+	},
+	config = {add = 1},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 10,
+	rarity = 3,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jencheese',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.add, jl.favhand(), #SMODS.find_card('j_jen_jeremy') > 0 and cheese_quotes.bb[math.random(#cheese_quotes.bb)] or cheese_quotes.normal[math.random(#cheese_quotes.normal)]}}
+    end,
+    calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands[jl.favhand()]) then
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = cheese_quotes.trigger[math.random(#cheese_quotes.trigger)], colour = G.C.BLUE})
+			ease_hands_played(card.ability.add or 1)
+			return nil, true
+		end
+	end
+}
+
+SMODS.Joker {
+	key = 'jeremy',
+	loc_txt = {
+		name = 'Jeremy',
+		text = {
+			'Scored cards give',
+			'{C:mult}+#1#{} Mult each',
+			'{X:green,C:white}Synergy:{} Scored cards give',
+			'{X:mult,C:white}x#1#{} Mult each instead',
+			'if you have {X:attention}Cheese',
+			' ',
+			caption('#2#'),
+			faceart('idot1537'),
+			origin('Rain World')
+		}
+	},
+	config = {mul = 2},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 6,
+	rarity = 2,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenjeremy',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.mul, #SMODS.find_card('j_jen_cheese') > 0 and 'Wawa!' or ('Wawa.' .. (math.random(2) == 1 and '..' or ''))}}
+    end,
+    calculate = function(self, card, context)
+		if context.cardarea == G.play then
+			local ret = {
+				message = 'Wawa!',
+				colour = G.C.MULT,
+				card = card
+			}
+			if #SMODS.find_card('j_jen_cheese') > 0 then
+				ret.x_mult = card.ability.mul
+				ret.message = ret.message .. ' (x' .. number_format(card.ability.mul) .. ' Mult)'
+			else
+				ret.mult = card.ability.mul
+				ret.message = ret.message .. ' (+' .. number_format(card.ability.mul) .. ' Mult)'
+			end
+			return ret, true
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'cheese',
+	loc_txt = {
+		name = 'Cheese',
+		text = {
+			'{C:blue}+#1#{} hand(s) if played',
+			'hand is your {C:attention}most played',
+			'{C:inactive}(#2#)',
+			' ',
+			"{C:inactive,E:1}#3#{}",
+			'{C:dark_edition,s:0.7,E:2}Face art by : idot1537',
+			'{C:cry_exotic,s:0.7,E:2}Origin : Rain World'
+		}
+	},
+	config = {add = 1},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 10,
+	rarity = 3,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jencheese',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.add, jl.favhand(), #SMODS.find_card('j_jen_jeremy') > 0 and cheese_quotes.bb[math.random(#cheese_quotes.bb)] or cheese_quotes.normal[math.random(#cheese_quotes.normal)]}}
+    end,
+    calculate = function(self, card, context)
+		if context.joker_main and context.poker_hands and next(context.poker_hands[jl.favhand()]) then
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = cheese_quotes.trigger[math.random(#cheese_quotes.trigger)], colour = G.C.BLUE})
+			ease_hands_played(card.ability.add or 1)
+			return nil, true
+		end
+	end
+}
+
+SMODS.Joker {
+	key = 'jeremy',
+	loc_txt = {
+		name = 'Jeremy',
+		text = {
+			'Scored cards give',
+			'{C:mult}+#1#{} Mult each',
+			'{X:green,C:white}Synergy:{} Scored cards give',
+			'{X:mult,C:white}x#1#{} Mult each instead',
+			'if you have {X:attention}Cheese',
+			' ',
+			"{C:inactive,E:1}#2#{}",
+			'{C:dark_edition,s:0.7,E:2}Face art by : idot1537',
+			'{C:cry_exotic,s:0.7,E:2}Origin : Rain World'
+		}
+	},
+	config = {mul = 2},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 6,
+	rarity = 2,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenjeremy',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.mul, #SMODS.find_card('j_jen_cheese') > 0 and 'Wawa!' or ('Wawa.' .. (math.random(2) == 1 and '..' or ''))}}
+    end,
+    calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play then
+			local ret = {
+				message = 'Wawa!',
+				colour = G.C.MULT,
+				card = card
+			}
+			if #SMODS.find_card('j_jen_cheese') > 0 then
+				ret.x_mult = card.ability.mul
+				ret.message = ret.message .. ' (x' .. number_format(card.ability.mul) .. ' Mult)'
+			else
+				ret.mult = card.ability.mul
+				ret.message = ret.message .. ' (+' .. number_format(card.ability.mul) .. ' Mult)'
+			end
+			return ret, true
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'oxy',
+	loc_txt = {
+		name = '{C:pastel_yellow}O{C:pink}x{}y',
+		text = {
+			'{C:attention}Steel{} cards give',
+			'{X:purple,C:white}x#1#{} Chips & Mult',
+			'when scored',
+			' ',
+			caption('#2#') .. '{C:red,E:1}#3#' .. caption('#4#'),
+			faceart('ocksie')
+		}
+	},
+	misc_badge = {
+		colour = G.C.almanac,
+		text_colour = G.C.CRY_BLOSSOM,
+		text = {
+			'Disciple of Kosmos',
+			'ocksie'
+		}
+	},
+	config = {steel = 1.5},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	sinis = { x = 2, y = 0 },
+	cost = 10,
+	rarity = 3,
+	fusable = true,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenoxy',
+	in_pool = function()
+		return #SMODS.find_card('j_jen_inhabited') <= 0
+	end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.steel, Jen.sinister and 'WHAT ARE YOU ' or Jen.gods() and 'I am-... I am-... I am... what is this feeling?' or 'We all cut close...', Jen.sinister and 'DOING ' or '', Jen.sinister and 'DOWN THERE?!?' or ''}}
+    end,
+    calculate = function(self, card, context)
+		if context.individual then
+			if context.cardarea == G.play then
+				if context.other_card.ability.name == 'Steel Card' then
+					return {
+						x_chips = card.ability.steel,
+						x_mult = card.ability.steel,
+						colour = G.C.PURPLE,
+						card = card
+					}, true
+				end
+			end
+		end
+	end
+}'''
+position = "at"
+payload = '''SMODS.Joker {
+	key = 'oxy',
+	loc_txt = {
+		name = 'Oxy',
+		text = {
+			'{C:attention}Steel{} cards give',
+			'{X:purple,C:white}x#1#{} Chips & Mult',
+			'when scored',
+			' ',
+			"{C:inactive,E:1}#2#{C:red,E:1}#3#{C:inactive,E:1}#4#",
+			'{C:dark_edition,s:0.7,E:2}Face art by : ocksie',
+		}
+	},
+	config = {steel = 1.5},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	sinis = { x = 2, y = 0 },
+	cost = 10,
+	rarity = 3,
+	fusable = true,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenoxy',
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.steel, Jen.sinister and 'WHAT ARE YOU ' or Jen.gods() and 'I am-... I am-... I am... what is this feeling?' or 'We all cut close...', Jen.sinister and 'DOING ' or '', Jen.sinister and 'DOWN THERE?!?' or ''}}
+    end,
+    calculate = function(self, card, context)
+		if context.main_scoring and context.cardarea == G.play then
+			if context.other_card.ability.name == 'Steel Card' then
+				return {
+					x_chips = card.ability.steel,
+					x_mult = card.ability.steel,
+					colour = G.C.PURPLE,
+					card = card
+				}, true
+			end
+		end
+	end
+}'''
+match_indent = true
