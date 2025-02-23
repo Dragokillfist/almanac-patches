@@ -828,3 +828,95 @@ SMODS.Joker {
 }
 --]]'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''
+		shop_size_buff = 3,
+		shop_voucher_count_buff = 2,
+		shop_booster_pack_count_buff = 2,
+		consumable_slot_count_buff = 18,
+		chess_cards = true,
+		verbose_astronomicon = false,
+		verbose_astronomicon_omega = false,
+		mana_cost = 25,
+		HQ_vanillashaders = true,
+		malice_base = 3000,
+		malice_increase = 1.25,
+		omega_chance = 300,
+		soul_omega_mod = 5,
+		wee_sizemod = 1.5,
+		safer_kosmos = false,
+		kosmos_safety_threshold = 100,
+		ante_threshold = 20,
+		ante_pow10 = 100,
+		ante_pow10_2 = 250,
+		ante_pow10_3 = 500,
+		ante_pow10_4 = 1000,
+		ante_exponentiate = 50,
+		ante_tetrate = 2500,
+		ante_pentate = 5000,
+		ante_polytate = 10000,
+		polytate_factor = 1000,
+		polytate_decrement = 1,
+		scalar_base = 1,
+		scalar_increment = .13,
+		scalar_additivedivisor = 50,
+		scalar_exponent = 1,
+		straddle = {
+			enabled = true,
+			acceleration = true,
+			skip_animation = false,
+			backwards_mod = 2,
+			progress_min = 3,
+			progress_max = 7,
+			progress_increment = 10
+		},
+		blind_scalar = {
+		},'''
+position = "at"
+payload = '''
+		shop_size_buff = 3,
+		shop_voucher_count_buff = 2,
+		shop_booster_pack_count_buff = 2,
+		consumable_slot_count_buff = 18,
+		chess_cards = true,
+		verbose_astronomicon = false,
+		verbose_astronomicon_omega = false,
+		mana_cost = 25,
+		HQ_vanillashaders = true,
+		malice_base = 3000,
+		malice_increase = 1.25,
+		omega_chance = 300,
+		soul_omega_mod = 5,
+		wee_sizemod = 1.5,
+		safer_kosmos = false,
+		kosmos_safety_threshold = 100,
+		ante_threshold = 20,
+		ante_pow10 = 100,
+		ante_pow10_2 = 250,
+		ante_pow10_3 = 500,
+		ante_pow10_4 = 1000,
+		ante_exponentiate = 50,
+		ante_tetrate = 2500,
+		ante_pentate = 5000,
+		ante_polytate = 10000,
+		polytate_factor = 1000,
+		polytate_decrement = 1,
+		scalar_base = 1,
+		scalar_increment = .13,
+		scalar_additivedivisor = 50,
+		scalar_exponent = 1,
+		straddle = {
+			enabled = true,
+			acceleration = true,
+			skip_animation = true,
+			backwards_mod = 2,
+			progress_min = 3,
+			progress_max = 7,
+			progress_increment = 10
+		},
+		blind_scalar = {
+		},'''
+match_indent = true
