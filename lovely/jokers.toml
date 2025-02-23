@@ -2283,3 +2283,193 @@ SMODS.Joker {
     end
 }'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'astro',
+	loc_txt = {
+		name = '{C:cry_twilight}Astro',
+		text = {
+			'{C:planet}Hand level-ups{} have an {C:green}initial #1#% chance{} to {C:attention}repeat',
+			'Repetitions {C:attention}continue until the chance fails',
+			'Repetition chance decreases by {C:red}' .. Jen.config.astro.decrement * 100 .. '%{} per success,',
+			'{C:attention}resets to initial chance{} after failure',
+			'Using {C:attention}non-{C:dark_edition}Negative {C:planet}Neutron Stars{}, {C:red}visibly leveling down hands',
+			'or {C:attention}applying editions to hands with {C:planet}Planets{} increases the {C:green}initial chance{} by {C:attention}+' .. Jen.config.astro.increment * 100 .. '%{}, up to a {C:attention}maximum of 100%',
+			'If {C:green}initial chance{} is {C:attention}100%{}, the decrease on repetition chance is {C:attention}reduced to ' .. Jen.config.astro.decrement * 50 .. '%',
+			'{C:inactive,s:0.8}(Chance upgrades and repetition processes are retriggerable)',
+			'{C:inactive,s:0.8}(Chance decrease is ' .. Jen.config.astro.retrigger_mod .. 'x stronger during retriggers)',
+			'{C:inactive,s:0.8}(Unaffected by probability alterations, ex. Oops! All 6s)',
+			' ',
+			"{C:inactive,s:0.9,E:1}*Dandy's closest friend! ...Right?*",
+			faceart('jenwalter666'),
+			origin('Dandy\'s World')
+		}
+	},
+	config = {neutrons = 0, maxed = false},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	dangerous = true,
+	unlocked = true,
+	discovered = true,
+	immutable = true,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = false,
+	unique = true,
+	wee_incompatible = true,
+	atlas = 'jenastro',
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.maxed and 100 or ((Jen.config.astro.initial + (Jen.config.astro.increment * center.ability.neutrons)) * 100)}}
+	end,
+    calculate = function(self, card, context)
+		if not context.blueprint_card and not context.destroying_card and not context.cry_ease_dollars and not context.post_trigger then
+			if context.jen_lving and context.card then
+				if not card.ability.maxed and context.lvs < 0 and not context.lv_instant then
+					card:speak(localize('k_upgrade_ex'), G.C.CRY_ASCENDANT)
+					card.ability.neutrons = card.ability.neutrons - context.lvs
+					if (Jen.config.astro.initial + (Jen.config.astro.increment * card.ability.neutrons)) >= 1 then
+						card.ability.maxed = true
+						card_status_text(card, 'Maxed out!', nil, 0.05*card.T.h, G.C.EDITION, 0.6, 0.6, 2, 2, 'bm', 'jen_enlightened')
+					end
+					return nil, true
+				elseif not context.card.astro_in_effect then
+					context.card.astro_in_effect = true
+					local odds = math.min(1, card.ability.maxed and 1 or (Jen.config.astro.initial + (Jen.config.astro.increment * card.ability.neutrons)))
+					if context.lvs and context.lvs > 0 then
+						local times = 0
+						local firstpass = false
+						if jl.njr(context) then 
+							card:speak(astro_blurbs, G.C.CRY_TWILIGHT)
+						else
+							card:speak(localize('k_again_ex'))
+						end
+						while true do
+							if odds >= 1 or (odds > 0 and jl.chance('astro_rng', 1/odds, true)) then
+								times = times + 1
+								odds = odds - ((Jen.config.astro.decrement / (card.ability.maxed and 2 or 1) * (context.retrigger_joker and Jen.config.astro.retrigger_mod or 1)))
+							else
+								if times > 0 then
+									if context.card and context.card.speak then context.card:speak('x' .. times, G.C.CRY_TWILIGHT) else card:speak('x' .. times, G.C.CRY_TWILIGHT) end
+									level_up_hand(context.card, context.lv_hand, context.lv_instant, context.lvs * times, true, true, true)
+									add_malice(5 * context.lvs * times)
+								else
+									if context.card and context.card.speak then context.card:speak(localize('k_nope_ex'), G.C.FILTER) else card:speak(localize('k_nope_ex'), G.C.FILTER) end
+								end
+								break
+							end
+						end
+					end
+					if not card.ability.maxed and context.card and context.card.gc and context.card:gc().set == 'Planet' and (context.card:gc().key == 'c_cry_nstar' or next((context.card.edition or {}))) and not (context.card.edition or {}).negative then
+						card:speak(localize('k_upgrade_ex'), G.C.CRY_ASCENDANT)
+						card.ability.neutrons = card.ability.neutrons + context.card:getEvalQty()
+						if (Jen.config.astro.initial + (Jen.config.astro.increment * card.ability.neutrons)) >= 1 then
+							card.ability.maxed = true
+							card_status_text(card, 'Maxed out!', nil, 0.05*card.T.h, G.C.EDITION, 0.6, 0.6, 2, 2, 'bm', 'jen_enlightened')
+						end
+					end
+					context.card.astro_in_effect = nil
+					return nil, true
+				end
+			end
+		end
+	end
+}'''
+position = 'at'
+payload = '''SMODS.Joker {
+	key = 'astro',
+	loc_txt = {
+		name = '{C:cry_twilight}Astro',
+		text = {
+			'{C:planet}Hand level-ups{} have an {C:green}initial #1#% chance{} to {C:attention}repeat',
+			'Repetitions {C:attention}continue until the chance fails',
+			'Repetition chance decreases by {C:red}' .. Jen.config.astro.decrement * 100 .. '%{} per success,',
+			'{C:attention}resets to initial chance{} after failure',
+			'Using {C:attention}non-{C:dark_edition}Negative {C:planet}Neutron Stars{}, {C:red}visibly leveling down hands',
+			'or {C:attention}applying editions to hands with {C:planet}Planets{} increases the {C:green}initial chance{} by {C:attention}+' .. Jen.config.astro.increment * 100 .. '%{}, up to a {C:attention}maximum of 100%',
+			'If {C:green}initial chance{} is {C:attention}100%{}, the decrease on repetition chance is {C:attention}reduced to ' .. Jen.config.astro.decrement * 50 .. '%',
+			'{C:inactive,s:0.8}(Chance upgrades and repetition processes are retriggerable)',
+			'{C:inactive,s:0.8}(Chance decrease is ' .. Jen.config.astro.retrigger_mod .. 'x stronger during retriggers)',
+			'{C:inactive,s:0.8}(Unaffected by probability alterations, ex. Oops! All 6s)',
+			' ',
+			"{C:inactive,s:0.9,E:1}*Dandy's closest friend! ...Right?*",
+			faceart('jenwalter666'),
+			origin('Dandy\'s World')
+		}
+	},
+	config = {neutrons = 0, maxed = false},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 50,
+	rarity = 'cry_exotic',
+	dangerous = true,
+	unlocked = true,
+	discovered = true,
+	immutable = true,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = false,
+	unique = true,
+	wee_incompatible = true,
+	atlas = 'jenastro',
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.maxed and 100 or ((Jen.config.astro.initial + (Jen.config.astro.increment * center.ability.neutrons)) * 100)}}
+	end,
+    calculate = function(self, card, context)
+		if not context.blueprint_card and not context.destroying_card and not context.cry_ease_dollars and not context.post_trigger then
+			if context.jen_lving and context.card then
+				if not card.ability.maxed and to_big(context.lvs) < to_big(0) and not context.lv_instant then
+					card:speak(localize('k_upgrade_ex'), G.C.CRY_ASCENDANT)
+					card.ability.neutrons = card.ability.neutrons - context.lvs
+					if (Jen.config.astro.initial + (Jen.config.astro.increment * card.ability.neutrons)) >= 1 then
+						card.ability.maxed = true
+						card_status_text(card, 'Maxed out!', nil, 0.05*card.T.h, G.C.EDITION, 0.6, 0.6, 2, 2, 'bm', 'jen_enlightened')
+					end
+					return nil, true
+				elseif not context.card.astro_in_effect then
+					context.card.astro_in_effect = true
+					local odds = math.min(1, card.ability.maxed and 1 or (Jen.config.astro.initial + (Jen.config.astro.increment * card.ability.neutrons)))
+					if context.lvs and to_big(context.lvs) > to_big(0) then
+						local times = 0
+						local firstpass = false
+						if jl.njr(context) then 
+							card:speak(astro_blurbs, G.C.CRY_TWILIGHT)
+						else
+							card:speak(localize('k_again_ex'))
+						end
+						while true do
+							if odds >= 1 or (odds > 0 and jl.chance('astro_rng', 1/odds, true)) then
+								times = times + 1
+								odds = odds - ((Jen.config.astro.decrement / (card.ability.maxed and 2 or 1) * (context.retrigger_joker and Jen.config.astro.retrigger_mod or 1)))
+							else
+								if times > 0 then
+									if context.card and context.card.speak then context.card:speak('x' .. times, G.C.CRY_TWILIGHT) else card:speak('x' .. times, G.C.CRY_TWILIGHT) end
+									level_up_hand(context.card, context.lv_hand, context.lv_instant, context.lvs * times, true, true, true)
+									add_malice(5 * context.lvs * times)
+								else
+									if context.card and context.card.speak then context.card:speak(localize('k_nope_ex'), G.C.FILTER) else card:speak(localize('k_nope_ex'), G.C.FILTER) end
+								end
+								break
+							end
+						end
+					end
+					if not card.ability.maxed and context.card and context.card.gc and context.card:gc().set == 'Planet' and (context.card:gc().key == 'c_cry_nstar' or next((context.card.edition or {}))) and not (context.card.edition or {}).negative then
+						card:speak(localize('k_upgrade_ex'), G.C.CRY_ASCENDANT)
+						card.ability.neutrons = card.ability.neutrons + context.card:getEvalQty()
+						if (Jen.config.astro.initial + (Jen.config.astro.increment * card.ability.neutrons)) >= 1 then
+							card.ability.maxed = true
+							card_status_text(card, 'Maxed out!', nil, 0.05*card.T.h, G.C.EDITION, 0.6, 0.6, 2, 2, 'bm', 'jen_enlightened')
+						end
+					end
+					context.card.astro_in_effect = nil
+					return nil, true
+				end
+			end
+		end
+	end
+}'''
+match_indent = true
