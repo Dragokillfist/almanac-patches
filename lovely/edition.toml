@@ -157,10 +157,7 @@ payload = '''SMODS.Edition({
         return { vars = { self.config.x_mult, self.config.x_chips, self.config.p_dollars } }
     end,
 	calculate = function(self, card, context)
-		if context.edition and context.cararea == G.jokers and context.joker_main then
-			return {x_mult = self.config.x_mult, x_chips = self.config.x_chips, dollars = self.config.p_dollars}
-		end
-		if context.main_scoring and context.cararea == G.play then
+		if context.edition and (context.cararea == G.jokers or context.cardarea == G.play) and (context.joker_main or context.main_scoring) then
 			return {x_mult = self.config.x_mult, x_chips = self.config.x_chips, dollars = self.config.p_dollars}
 		end
 	end
