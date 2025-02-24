@@ -14,3 +14,23 @@ payload = '''if to_big(predicted_level) < to_big(1) then
                             quota = quota + math.abs(predicted_level) + 1
                         end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS aurinko "Aurinko.lua"]'''
+pattern = '''if obj.x_chips then
+							factor = to_big(obj.x_chips) ^ math.abs(amount)
+							if amount > 0 then
+								op = 'x'
+								G.GAME.hands[hand].s_chips = (math.max(get_s_chips(hand) * factor, 1))
+								G.GAME.hands[hand].chips = (math.max(G.GAME.hands[hand].chips * factor, 1))
+							else'''
+position = "at"
+payload = '''if obj.x_chips then
+							factor = to_big(obj.x_chips) ^ math.abs(amount)
+							if to_big(amount) > to_big(0) then
+								op = 'x'
+								G.GAME.hands[hand].s_chips = (math.max(get_s_chips(hand) * factor, 1))
+								G.GAME.hands[hand].chips = (math.max(G.GAME.hands[hand].chips * factor, 1))
+							else'''
+match_indent = true
