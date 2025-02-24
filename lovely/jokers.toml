@@ -2691,7 +2691,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = '''=[SMODS jen "Jen.lua"]'''
-pattern '''SMODS.Joker {
+pattern = '''SMODS.Joker {
 	key = 'landa',
 	loc_txt = {
 		name = 'Landa Veris',
