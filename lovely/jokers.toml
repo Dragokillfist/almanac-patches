@@ -2473,3 +2473,217 @@ payload = '''SMODS.Joker {
 	end
 }'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''	SMODS.Joker {
+		key = 'wondergeist',
+		loc_txt = {
+			name = 'Jen Walter the Wondergeist',
+			text = {
+				'{C:attention}Poker hands{} gain',
+				'{X:jen_RGB,C:white,s:3}^^2{} Chips and Mult',
+				'when leveled up',
+				' ',
+				'{C:inactive,s:1.25,E:1}i feel... otherworldly...!',
+				faceart('jenwalter666'),
+				origin('CRAFTWORLD')
+			}
+		},
+		config = {},
+		pos = { x = 0, y = 0 },
+		soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 }},
+		no_doe = true,
+		cost = 5e5,
+		unique = true,
+		rarity = 'jen_transcendent',
+		unlocked = true,
+		discovered = true,
+		blueprint_compat = false,
+		eternal_compat = true,
+		perishable_compat = false,
+		permaeternal = true,
+		immutable = true,
+		unique = true,
+		debuff_immune = true,
+		atlas = 'jenwondergeist',
+		calculate = function(self, card, context)
+			if not context.cry_ease_dollars and not context.post_trigger and context.jen_lving then
+				if context.lvs > 0 then
+					local iterations = math.min(1e3, context.lvs)
+					for i = 1, iterations do
+						G.GAME.hands[context.lv_hand].chips = to_big(G.GAME.hands[context.lv_hand].chips):arrow(2, 2)
+						G.GAME.hands[context.lv_hand].mult = to_big(G.GAME.hands[context.lv_hand].mult):arrow(2, 2)
+					end
+					delay(0.5)
+					Q(function() card:juice_up(1, 1) return true end)
+					play_sound_q('talisman_eechip')
+					play_sound_q('talisman_eemult')
+					jl.hcm('^^2 (x' .. iterations .. ')', '^^2 (x' .. iterations .. ')', true)
+					if not context.lv_instant then jl.hcm(G.GAME.hands[context.lv_hand].chips, G.GAME.hands[context.lv_hand].mult) end
+					delay(0.5)
+				end
+				return nil, true
+			end
+		end
+	}'''
+position = 'at'
+payload = '''	SMODS.Joker {
+		key = 'wondergeist',
+		loc_txt = {
+			name = 'Jen Walter the Wondergeist',
+			text = {
+				'{C:attention}Poker hands{} gain',
+				'{X:jen_RGB,C:white,s:3}^^2{} Chips and Mult',
+				'when leveled up',
+				' ',
+				'{C:inactive,s:1.25,E:1}i feel... otherworldly...!',
+				faceart('jenwalter666'),
+				origin('CRAFTWORLD')
+			}
+		},
+		config = {},
+		pos = { x = 0, y = 0 },
+		soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 }},
+		no_doe = true,
+		cost = 5e5,
+		unique = true,
+		rarity = 'jen_transcendent',
+		unlocked = true,
+		discovered = true,
+		blueprint_compat = false,
+		eternal_compat = true,
+		perishable_compat = false,
+		permaeternal = true,
+		immutable = true,
+		unique = true,
+		debuff_immune = true,
+		atlas = 'jenwondergeist',
+		calculate = function(self, card, context)
+			if not context.cry_ease_dollars and not context.post_trigger and context.jen_lving then
+				if to_big(context.lvs) > to_big(0) then
+					local iterations = math.min(1e3, to_big(context.lvs))
+					for i = 1, #iterations do
+						G.GAME.hands[context.lv_hand].chips = to_big(G.GAME.hands[context.lv_hand].chips):arrow(2, 2)
+						G.GAME.hands[context.lv_hand].mult = to_big(G.GAME.hands[context.lv_hand].mult):arrow(2, 2)
+					end
+					delay(0.5)
+					Q(function() card:juice_up(1, 1) return true end)
+					play_sound_q('talisman_eechip')
+					play_sound_q('talisman_eemult')
+					jl.hcm('^^2 (x' .. iterations .. ')', '^^2 (x' .. iterations .. ')', true)
+					if not context.lv_instant then jl.hcm(G.GAME.hands[context.lv_hand].chips, G.GAME.hands[context.lv_hand].mult) end
+					delay(0.5)
+				end
+				return nil, true
+			end
+		end
+	}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''	SMODS.Joker {
+		key = 'wondergeist2',
+		loc_txt = {
+			name = 'Jen Walter the Wondergeist {C:cry_ember}(Ascended)',
+			text = {
+				'{C:attention}Poker hands{} gain',
+				'{X:black,C:red,s:4}^^^3{} Chips & Mult',
+				'when leveled up',
+				' ',
+				"{C:inactive,s:1.25,E:1}my body feels so... delicate, but strong at the same time...?",
+				faceart('jenwalter666'),
+				origin('CRAFTWORLD')
+			}
+		},
+		pos = { x = 0, y = 0 },
+		soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 }},
+		no_doe = true,
+		cost = 5e8,
+		unique = true,
+		rarity = 'jen_transcendent',
+		unlocked = true,
+		discovered = true,
+		blueprint_compat = false,
+		eternal_compat = true,
+		perishable_compat = false,
+		permaeternal = true,
+		immutable = true,
+		unique = true,
+		debuff_immune = true,
+		atlas = 'jenwondergeist2',
+		calculate = function(self, card, context)
+			if not context.cry_ease_dollars and not context.post_trigger and context.jen_lving then
+				if context.lvs > 0 then
+					local iterations = math.min(1e3, context.lvs)
+					for i = 1, iterations do
+						G.GAME.hands[context.lv_hand].chips = to_big(G.GAME.hands[context.lv_hand].chips):arrow(3, 3)
+						G.GAME.hands[context.lv_hand].mult = to_big(G.GAME.hands[context.lv_hand].mult):arrow(3, 3)
+					end
+					delay(0.5)
+					Q(function() card:juice_up(2, 2) return true end)
+					play_sound_q('talisman_eeechip')
+					play_sound_q('talisman_eeemult')
+					jl.hcm('^^^3 (x' .. iterations .. ')', '^^^3 (x' .. iterations .. ')', true)
+					if not context.lv_instant then jl.hcm(G.GAME.hands[context.lv_hand].chips, G.GAME.hands[context.lv_hand].mult) end
+					delay(0.5)
+				end
+				return nil, true
+			end
+		end
+	}'''
+position = 'at'
+payload = '''	SMODS.Joker {
+		key = 'wondergeist2',
+		loc_txt = {
+			name = 'Jen Walter the Wondergeist {C:cry_ember}(Ascended)',
+			text = {
+				'{C:attention}Poker hands{} gain',
+				'{X:black,C:red,s:4}^^^3{} Chips & Mult',
+				'when leveled up',
+				' ',
+				"{C:inactive,s:1.25,E:1}my body feels so... delicate, but strong at the same time...?",
+				faceart('jenwalter666'),
+				origin('CRAFTWORLD')
+			}
+		},
+		pos = { x = 0, y = 0 },
+		soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 }},
+		no_doe = true,
+		cost = 5e8,
+		unique = true,
+		rarity = 'jen_transcendent',
+		unlocked = true,
+		discovered = true,
+		blueprint_compat = false,
+		eternal_compat = true,
+		perishable_compat = false,
+		permaeternal = true,
+		immutable = true,
+		unique = true,
+		debuff_immune = true,
+		atlas = 'jenwondergeist2',
+		calculate = function(self, card, context)
+			if not context.cry_ease_dollars and not context.post_trigger and context.jen_lving then
+				if to_big(context.lvs) > to_big(0) then
+					local iterations = math.min(1e3, to_big(context.lvs))
+					for i = 1, #iterations do
+						G.GAME.hands[context.lv_hand].chips = to_big(G.GAME.hands[context.lv_hand].chips):arrow(3, 3)
+						G.GAME.hands[context.lv_hand].mult = to_big(G.GAME.hands[context.lv_hand].mult):arrow(3, 3)
+					end
+					delay(0.5)
+					Q(function() card:juice_up(2, 2) return true end)
+					play_sound_q('talisman_eeechip')
+					play_sound_q('talisman_eeemult')
+					jl.hcm('^^^3 (x' .. iterations .. ')', '^^^3 (x' .. iterations .. ')', true)
+					if not context.lv_instant then jl.hcm(G.GAME.hands[context.lv_hand].chips, G.GAME.hands[context.lv_hand].mult) end
+					delay(0.5)
+				end
+				return nil, true
+			end
+		end
+	}'''
+match_indent = true
