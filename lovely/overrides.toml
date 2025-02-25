@@ -942,3 +942,29 @@ payload = '''
 		blind_scalar = {
 		},'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''function ease_dollars(mod, instant, force_update)
+	if (G.GAME.dollars + mod ~= G.GAME.dollars and math.abs(mod) > (G.GAME.dollars / 1e6)) or force_update then
+		edr(mod,instant)
+		local should_clamp = jl.invalid_number(number_format(G.GAME.dollars)) or G.GAME.dollars > 1e100 or G.GAME.dollars < -1e100
+		if should_clamp then
+			G.GAME.dollars = jl.invalid_number(number_format(G.GAME.dollars)) and 1e100 or math.min(math.max(G.GAME.dollars, -1e100), 1e100)
+			ease_dollars(0, true, true)
+		end
+	end
+end'''
+position = "at"
+payload = '''function ease_dollars(mod, instant, force_update)
+	if to_big((G.GAME.dollars + mod ~= G.GAME.dollars and math.abs(mod))) > to_big((G.GAME.dollars / 1e6)) or force_update then
+		edr(mod,instant)
+		local should_clamp = jl.invalid_number(number_format(G.GAME.dollars)) or to_big(G.GAME.dollars) > to_big(1e100) or to_big(G.GAME.dollars) < to_big(-1e100)
+		if should_clamp then
+			G.GAME.dollars = jl.invalid_number(number_format(G.GAME.dollars)) and 1e100 or math.min(math.max(G.GAME.dollars, -1e100), 1e100)
+			ease_dollars(0, true, true)
+		end
+	end
+end'''
+match_indent = true
