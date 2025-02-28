@@ -1,16 +1,14 @@
 {
-	"id": "alad",
-	"name": "almanac addon",
-	"display_name": "Almanac Addon",
-	"author": ["Dragokillfist, TheIntrester"],
-	"description": "A mod the allows jens almanac to work in the newer versions of steamodded",
-	"prefix": "jad",
-	"main_file": "addon.lua",
-	"priority": 0,
-	"badge_colour": "323244",
-	"badge_text_colour": "",
-	"version": "0.1.0b",
-	"dependencies": [
-        "Steamodded (>=1.0.0~ALPHA-1326a)",
-    ],
+  "id": "alad",
+  "name": "almanac addon",
+  "display_name": "Almanac Addon",
+  "author": ["Dragokillfist, TheInterester"],
+  "description": "A mod the allows jens almanac to work in the newer versions of steamodded",
+  "prefix": "jad",
+  "main_file": "addon.lua",
+  "priority": 0,
+  "badge_colour": "323244",
+  "badge_text_colour": "",
+  "version": "0.1.0b",
+  "dependencies": ["Steamodded (>=1.0.0~ALPHA-1326a)"]
 }
