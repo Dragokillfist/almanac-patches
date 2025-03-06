@@ -1,0 +1,48 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS CBL "CruelBlinds.lua"]'''
+pattern = '''SMODS.Blind	{
+    loc_txt = {
+        name = 'The Reach',
+        text = { 'Disperse half of levels of played', 'poker hand amongst other poker hands' }
+    },
+    key = 'reach',
+    config = {},
+    boss = {min = 4, max = 10, hardcore = true}, 
+    boss_colour = HEX("881188"),
+    atlas = "blinds",
+    pos = { x = 0, y = 11},
+    vars = {},
+    dollars = 5,
+    mult = 2,
+    debuff_hand = function(self, cards, hand, handname, check)
+        G.GAME.blind.triggered = false
+        if not check then
+            local count = math.min(G.GAME.hands[handname].level - 1, math.floor(G.GAME.hands[handname].level / 2))
+            if (count > 0) then'''
+position = 'at'
+payload = '''SMODS.Blind	{
+    loc_txt = {
+        name = 'The Reach',
+        text = { 'Disperse half of levels of played', 'poker hand amongst other poker hands' }
+    },
+    key = 'reach',
+    config = {},
+    boss = {min = 4, max = 10, hardcore = true}, 
+    boss_colour = HEX("881188"),
+    atlas = "blinds",
+    pos = { x = 0, y = 11},
+    vars = {},
+    dollars = 5,
+    mult = 2,
+    debuff_hand = function(self, cards, hand, handname, check)
+        G.GAME.blind.triggered = false
+        if not check then
+            local count = math.min(G.GAME.hands[handname].level - 1, math.floor(G.GAME.hands[handname].level / 2))
+            if (to_big(count) > to_big(0)) then'''
+match_indent = true
