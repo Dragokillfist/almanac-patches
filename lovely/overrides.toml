@@ -968,3 +968,11 @@ payload = '''function ease_dollars(mod, instant, force_update)
 	end
 end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''cry_bonusvouchermod(Jen.config.shop_voucher_count_buff)'''
+position = "at"
+payload = '''SMODS.change_voucher_limit(Jen.config.shop_voucher_count_buff)'''
+match_indent = true
