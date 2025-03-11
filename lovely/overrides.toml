@@ -1016,3 +1016,11 @@ pattern = '''local set_to = jl.invalid_number(number_format(G.GAME.dollars)) and
 position = "at"
 payload = '''local set_to = jl.invalid_number(number_format(G.GAME.dollars)) and to_big(1e100) or math.min(math.max(G.GAME.dollars, to_big(-1e100)), to_big(1e100))'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''if (G.GAME.dollars + mod ~= G.GAME.dollars and math.abs(mod) > (math.abs(G.GAME.dollars) / 1e6)) or force_update then'''
+position = "at"
+payload = '''if (to_big(G.GAME.dollars) + mod ~= to_big(G.GAME.dollars) and to_big(math.abs(mod)) > (math.abs(G.GAME.dollars) / to_big(1e6))) or force_update then'''
+match_indent = true
