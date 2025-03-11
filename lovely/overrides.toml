@@ -1024,3 +1024,23 @@ pattern = '''if (G.GAME.dollars + mod ~= G.GAME.dollars and math.abs(mod) > (mat
 position = "at"
 payload = '''if (to_big(G.GAME.dollars) + mod ~= to_big(G.GAME.dollars) and to_big(math.abs(mod)) > (math.abs(G.GAME.dollars) / to_big(1e6))) or force_update then'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''	if G.GAME.hands[hand].level > 1e100 then --until we port to newcalc (which the new talisman is at), this failsafe will remain here.
+		G.GAME.hands[hand].level = 1e100
+		if not instant then
+			update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {level=1e100})
+			delay(0.3)
+		end
+	end'''
+position = "at"
+payload = '''	if G.GAME.hands[hand].level > to_big(1e100) then --until we port to newcalc (which the new talisman is at), this failsafe will remain here.
+		G.GAME.hands[hand].level = to_big(1e100)
+		if not instant then
+			update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {level=1e100})
+			delay(0.3)
+		end
+	end'''
+match_indent = true
