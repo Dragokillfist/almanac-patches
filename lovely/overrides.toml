@@ -34,66 +34,6 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = '''=[SMODS jen "Jen.lua"]'''
-pattern = '''if amount > 0 then
-		if #SMODS.find_card('j_jen_guilduryn') > 0 and hand ~= jl.favhand() then
-			for k, v in ipairs(G.jokers.cards) do
-				if v.gc and v:gc().key == 'j_jen_guilduryn' then
-					card_eval_status_text(v, 'extra', nil, nil, nil, {message = 'Redirected!', colour = G.C.MONEY})
-					break
-				end
-			end
-			hand = jl.favhand()
-			if not instant then
-				jl.th(hand)
-			end
-		end
-	end'''
-position = "at"
-payload = '''if to_big(amount) > to_big(0) then
-		if #SMODS.find_card('j_jen_guilduryn') > 0 and hand ~= jl.favhand() then
-			for k, v in ipairs(G.jokers.cards) do
-				if v.gc and v:gc().key == 'j_jen_guilduryn' then
-					card_eval_status_text(v, 'extra', nil, nil, nil, {message = 'Redirected!', colour = G.C.MONEY})
-					break
-				end
-			end
-			hand = jl.favhand()
-			if not instant then
-				jl.th(hand)
-			end
-		end
-	end'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS jen "Jen.lua"]'''
-pattern = '''if amount > 0 then
-		add_malice(25 * amount)
-	end
-	if jl.invalid_number(number_format(G.GAME.hands[hand].level)) then
-		G.GAME.hands[hand].level = 1e300
-		if not instant then
-			update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {level=maxfloat})
-			delay(0.3)
-		end
-	end'''
-position = "at"
-payload = '''if to_big(amount) > to_big(0) then
-        add_malice(25 * amount)
-    end
-    if jl.invalid_number(number_format(G.GAME.hands[hand].level)) then
-        G.GAME.hands[hand].level = 1e300
-        if not instant then
-            update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {level=maxfloat})
-            delay(0.3)
-        end
-    end'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS jen "Jen.lua"]'''
 pattern = '''if amount < 0 and Jen.hv('astronomy', 11) and not no_astronomy then
 		local refund = math.abs(amount) / 4
 		local fav = jl.favhand()
