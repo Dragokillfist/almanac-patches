@@ -1052,3 +1052,115 @@ pattern = '''if amount > 0 then'''
 position = "at"
 payload = '''if to_big(amount) > to_big(0) then'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''	use = function(self, card, area, copier)
+		local fav = jl.favhand()
+		local hands = jl.adjacenthands(fav)
+		local lv = 0
+		local levels_siphoned = 0
+		if hands.backhand then
+			if G.GAME.hands[hands.backhand].level > 0 then
+				jl.th(hands.backhand)
+				lv = G.GAME.hands[hands.backhand].level / 2
+				level_up_hand(card, hands.backhand, nil, -lv)
+				levels_siphoned = lv
+			end
+		end
+		if hands.forehand then
+			if G.GAME.hands[hands.forehand].level > 0 then
+				jl.th(hands.forehand)
+				lv = G.GAME.hands[hands.forehand].level / 2
+				level_up_hand(card, hands.forehand, nil, -lv)
+				levels_siphoned = levels_siphoned + lv
+			end
+		end
+		card:do_jen_astronomy(fav, levels_siphoned)
+		jl.th(fav)
+		level_up_hand(card, fav, nil, levels_siphoned)
+		jl.ch()
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local fav = jl.favhand()
+		local hands = jl.adjacenthands(fav)
+		local lv = 0
+		local levels_siphoned = 0
+		local divisor = 2 - (1 / (2^(number-1)))
+		if hands.backhand then
+			if G.GAME.hands[hands.backhand].level > 0 then
+				jl.th(hands.backhand)
+				lv = (G.GAME.hands[hands.backhand].level/divisor)
+				level_up_hand(card, hands.backhand, nil, -lv)
+				levels_siphoned = lv
+			end
+		end
+		if hands.forehand then
+			if G.GAME.hands[hands.forehand].level > 0 then
+				jl.th(hands.forehand)
+				lv = (G.GAME.hands[hands.forehand].level/divisor)
+				level_up_hand(card, hands.forehand, nil, -lv)
+				levels_siphoned = levels_siphoned + lv
+			end
+		end
+		card:do_jen_astronomy(fav, levels_siphoned)
+		jl.th(fav)
+		level_up_hand(card, fav, nil, levels_siphoned)
+		jl.ch()
+	end'''
+position = "at"
+payload = '''	use = function(self, card, area, copier)
+		local fav = jl.favhand()
+		local hands = jl.adjacenthands(fav)
+		local lv = to_big(0)
+		local levels_siphoned = to_big(0)
+		if hands.backhand then
+			if G.GAME.hands[hands.backhand].level > to_big(0) then
+				jl.th(hands.backhand)
+				lv = G.GAME.hands[hands.backhand].level / to_big(2)
+				level_up_hand(card, hands.backhand, nil, -lv)
+				levels_siphoned = lv
+			end
+		end
+		if hands.forehand then
+			if G.GAME.hands[hands.forehand].level > to_big(0) then
+				jl.th(hands.forehand)
+				lv = G.GAME.hands[hands.forehand].level / to_big(2)
+				level_up_hand(card, hands.forehand, nil, -lv)
+				levels_siphoned = levels_siphoned + lv
+			end
+		end
+		card:do_jen_astronomy(fav, levels_siphoned)
+		jl.th(fav)
+		level_up_hand(card, fav, nil, levels_siphoned)
+		jl.ch()
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local fav = jl.favhand()
+		local hands = jl.adjacenthands(fav)
+		local lv = to_big(0)
+		local levels_siphoned = to_big(0)
+		local divisor = to_big(2) - (1 / (2^(number-1)))
+		if hands.backhand then
+			if G.GAME.hands[hands.backhand].level > to_big(0) then
+				jl.th(hands.backhand)
+				lv = (G.GAME.hands[hands.backhand].level/divisor)
+				level_up_hand(card, hands.backhand, nil, -lv)
+				levels_siphoned = lv
+			end
+		end
+		if hands.forehand then
+			if G.GAME.hands[hands.forehand].level > to_big(0) then
+				jl.th(hands.forehand)
+				lv = (G.GAME.hands[hands.forehand].level/divisor)
+				level_up_hand(card, hands.forehand, nil, -lv)
+				levels_siphoned = levels_siphoned + lv
+			end
+		end
+		card:do_jen_astronomy(fav, levels_siphoned)
+		jl.th(fav)
+		level_up_hand(card, fav, nil, levels_siphoned)
+		jl.ch()
+	end'''
+match_indent = true
