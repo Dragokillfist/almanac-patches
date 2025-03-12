@@ -2794,3 +2794,46 @@ payload = '''SMODS.Joker {
 }'''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''	calculate = function(self, card, context)
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			local retrigger_amount = 0
+			for i = 1, #G.jokers.cards do
+				if context.other_card == G.jokers.cards[i] then
+					retrigger_amount = i
+				end
+			end
+			if context.other_card == G.jokers.cards[retrigger_amount] then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = retrigger_amount,
+					card = card
+				}
+			else
+				return nil, true
+			end
+        end
+	end'''
+position = "at"
+payload = '''	calculate = function(self, card, context)
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			local retrigger_amount = to_big(0)
+			for i = 1, #G.jokers.cards do
+				if context.other_card == G.jokers.cards[i] then
+					retrigger_amount = i
+				end
+			end
+			if context.other_card == G.jokers.cards[retrigger_amount] then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = retrigger_amount,
+					card = card
+				}
+			else
+				return nil, true
+			end
+        end
+	end'''
+match_indent = true
