@@ -1179,3 +1179,4 @@ SMODS.current_mod.optional_features = {
 	}
 	]]
 }'''
+match_indent = true
