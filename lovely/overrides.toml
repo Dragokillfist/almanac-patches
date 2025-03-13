@@ -1104,3 +1104,31 @@ payload = '''	use = function(self, card, area, copier)
 		jl.ch()
 	end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''if Jen.hv('astronomy', 13) and amount >= 1 and not no_astronomy_omega then
+		local pos = jl.handpos(hand)
+		--local edi = ((card or {}).edition or {}).key or 'e_base'
+		--if edi == 'e_negative' then edi = 'e_base' end
+		--if not a13_sum[edi] then a13_sum[edi] = {} end
+		if G.handlist[pos + 1] then
+			--if not astronomyomega_cumulative[G.handlist[pos + 1]] then astronomyomega_cumulative[G.handlist[pos + 1]] = 0 end
+			if Jen.config.verbose_astronomicon_omega then jl.th(G.handlist[pos + 1]) end
+			fastlv(card, G.handlist[pos + 1], not Jen.config.verbose_astronomicon_omega, amount / 2, true)
+		end
+	end'''
+position = "at"
+payload = '''if Jen.hv('astronomy', 13) and to_big(amount) >= to_big(1) and not no_astronomy_omega then
+		local pos = jl.handpos(hand)
+		--local edi = ((card or {}).edition or {}).key or 'e_base'
+		--if edi == 'e_negative' then edi = 'e_base' end
+		--if not a13_sum[edi] then a13_sum[edi] = {} end
+		if G.handlist[pos + 1] then
+			--if not astronomyomega_cumulative[G.handlist[pos + 1]] then astronomyomega_cumulative[G.handlist[pos + 1]] = 0 end
+			if Jen.config.verbose_astronomicon_omega then jl.th(G.handlist[pos + 1]) end
+			fastlv(card, G.handlist[pos + 1], not Jen.config.verbose_astronomicon_omega, amount / to_big(2), true)
+		end
+	end'''
+match_indent = true

@@ -2837,3 +2837,263 @@ payload = '''	calculate = function(self, card, context)
         end
 	end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'haro',
+	loc_txt = {
+		name = 'Haro',
+		text = {
+			'{C:tarot}Tarots {C:planet}level up',
+			'{C:attention}all hands{} when used or sold',
+			'{X:green,C:white}Synergy:{} {X:dark_edition,C:red}^#1#{C:red} Mult{} if',
+			'you have {X:attention,C:black}Suzaku',
+			' ',
+			caption('#2#'),
+			caption('#3#'),
+			faceart('raidoesthings'),
+			origin('Cult of the Lamb'),
+			au('Prophecy of the Broken Crowns')
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	config = {extra = {synergy_mult = 1.65}},
+	cost = 15,
+	rarity = 'cry_epic',
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenharo',
+	in_pool = function()
+		return #SMODS.find_card('j_jen_godfather') <= 0
+	end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.synergy_mult, Jen.gods() and 'Make it stop! MAKE IT STOP!' or Jen.sinister and 'What kind of tales do you tell?!' or 'I live to tell tales,', Jen.gods() and 'I CAN\'T TAKE IIIIIT!' or Jen.sinister and 'This is just pure psychopathy!!' or 'both of old and of new.'}}
+    end,
+	calculate = function(self, card, context)
+		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == 'Tarot' then
+			local quota = (context.consumeable:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(haro_blurbs, G.C.SECONDARY_SET.Tarot)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		elseif context.selling_card and not context.selling_self and context.card.ability.set == 'Tarot' then
+			local quota = (context.card:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(haro_blurbs, G.C.SECONDARY_SET.Tarot)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		end
+		if #SMODS.find_card('j_jen_suzaku') > 0 then
+			if context.cardarea == G.jokers and not context.before and not context.after then
+				return {
+					message = 'Either with a sword, or a bullet! (^' .. card.ability.extra.synergy_mult .. ' Mult)',
+					Emult_mod = card.ability.extra.synergy_mult,
+					colour = G.C.DARK_EDITION
+				}, true
+			end
+		end
+	end
+}'''
+position = 'at'
+payload = '''SMODS.Joker {
+	key = 'haro',
+	loc_txt = {
+		name = 'Haro',
+		text = {
+			'{C:tarot}Tarots {C:planet}level up',
+			'{C:attention}all hands{} when used or sold',
+			'{X:green,C:white}Synergy:{} {X:dark_edition,C:red}^#1#{C:red} Mult{} if',
+			'you have {X:attention,C:black}Suzaku',
+			' ',
+			caption('#2#'),
+			caption('#3#'),
+			faceart('raidoesthings'),
+			origin('Cult of the Lamb'),
+			au('Prophecy of the Broken Crowns')
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	config = {extra = {synergy_mult = 1.65}},
+	cost = 15,
+	rarity = 'cry_epic',
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jenharo',
+	in_pool = function()
+		return #SMODS.find_card('j_jen_godfather') <= 0
+	end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.synergy_mult, Jen.gods() and 'Make it stop! MAKE IT STOP!' or Jen.sinister and 'What kind of tales do you tell?!' or 'I live to tell tales,', Jen.gods() and 'I CAN\'T TAKE IIIIIT!' or Jen.sinister and 'This is just pure psychopathy!!' or 'both of old and of new.'}}
+    end,
+	calculate = function(self, card, context)
+		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == 'Tarot' then
+			local quota = (context.consumeable:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(haro_blurbs, G.C.SECONDARY_SET.Tarot)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		elseif context.selling_card and not context.selling_self and context.card.ability.set == 'Tarot' then
+			local quota = (context.card:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(haro_blurbs, G.C.SECONDARY_SET.Tarot)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		end
+		if #SMODS.find_card('j_jen_suzaku') > 0 then
+			if context.cardarea == G.jokers and context.joker_main then
+				return {
+					message = 'Either with a sword, or a bullet! (^' .. card.ability.extra.synergy_mult .. ' Mult)',
+					Emult_mod = card.ability.extra.synergy_mult,
+					colour = G.C.DARK_EDITION
+				}, true
+			end
+		end
+	end
+}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Joker {
+	key = 'suzaku',
+	loc_txt = {
+		name = 'Suzaku',
+		text = {
+			'{C:spectral}Spectrals {C:planet}level up',
+			'{C:attention}all hands{} when used or sold',
+			'{X:green,C:white}Synergy:{} {X:dark_edition,C:red}^#1#{C:red} Mult{} if',
+			'you have {X:attention,C:black}Haro',
+			' ',
+			caption('#2#'),
+			caption('#3#'),
+			faceart('raidoesthings')
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	config = {extra = {synergy_mult = 1.65}},
+	cost = 15,
+	rarity = 'cry_epic',
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jensuzaku',
+	in_pool = function()
+		return #SMODS.find_card('j_jen_godmother') <= 0
+	end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.synergy_mult, Jen.gods() and 'GGHHAAAAAAAHHHHHHHHhhh-!!' or Jen.sinister and 'What kind of firepower is this?!' or 'You gotta finish the job fast', Jen.gods() and '' or Jen.sinister and 'My blunderbuss can\'t even compete!' or 'sometimes, and you have me to help!'}}
+    end,
+	calculate = function(self, card, context)
+		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == 'Spectral' then
+			local quota = (context.consumeable:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(suzaku_blurbs, G.C.SECONDARY_SET.Spectral)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		elseif context.selling_card and not context.selling_self and context.card.ability.set == 'Spectral' then
+			local quota = (context.card:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(suzaku_blurbs, G.C.SECONDARY_SET.Spectral)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		end
+		if #SMODS.find_card('j_jen_haro') > 0 then
+			if context.cardarea == G.jokers and not context.before and not context.after then
+				return {
+					message = 'All it takes is one chance. (^' .. card.ability.extra.synergy_mult .. ' Mult)',
+					Emult_mod = card.ability.extra.synergy_mult,
+					colour = G.C.DARK_EDITION
+				}, true
+			end
+		end
+	end
+}'''
+position = 'at'
+payload = '''SMODS.Joker {
+	key = 'suzaku',
+	loc_txt = {
+		name = 'Suzaku',
+		text = {
+			'{C:spectral}Spectrals {C:planet}level up',
+			'{C:attention}all hands{} when used or sold',
+			'{X:green,C:white}Synergy:{} {X:dark_edition,C:red}^#1#{C:red} Mult{} if',
+			'you have {X:attention,C:black}Haro',
+			' ',
+			caption('#2#'),
+			caption('#3#'),
+			faceart('raidoesthings')
+		}
+	},
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	config = {extra = {synergy_mult = 1.65}},
+	cost = 15,
+	rarity = 'cry_epic',
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	atlas = 'jensuzaku',
+	in_pool = function()
+		return #SMODS.find_card('j_jen_godmother') <= 0
+	end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.synergy_mult, Jen.gods() and 'GGHHAAAAAAAHHHHHHHHhhh-!!' or Jen.sinister and 'What kind of firepower is this?!' or 'You gotta finish the job fast', Jen.gods() and '' or Jen.sinister and 'My blunderbuss can\'t even compete!' or 'sometimes, and you have me to help!'}}
+    end,
+	calculate = function(self, card, context)
+		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == 'Spectral' then
+			local quota = (context.consumeable:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(suzaku_blurbs, G.C.SECONDARY_SET.Spectral)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		elseif context.selling_card and not context.selling_self and context.card.ability.set == 'Spectral' then
+			local quota = (context.card:getEvalQty())
+			card.cumulative_lvs = (card.cumulative_lvs or 0) + quota
+			if jl.njr(context) then
+				card:speak(suzaku_blurbs, G.C.SECONDARY_SET.Spectral)
+				card:apply_cumulative_levels()
+			end
+			return nil, true
+		end
+		if #SMODS.find_card('j_jen_haro') > 0 then
+			if context.cardarea == G.jokers and context.joker_main then
+				return {
+					message = 'All it takes is one chance. (^' .. card.ability.extra.synergy_mult .. ' Mult)',
+					Emult_mod = card.ability.extra.synergy_mult,
+					colour = G.C.DARK_EDITION
+				}, true
+			end
+		end
+	end
+}'''
+match_indent = true
