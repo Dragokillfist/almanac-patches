@@ -1132,3 +1132,50 @@ payload = '''if Jen.hv('astronomy', 13) and to_big(amount) >= to_big(1) and not 
 		end
 	end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''local maxfloat = 1.7976931348623157e308
+
+local function checkerboard_text(txt)
+	local str = ''
+	local chars = jl.string_to_table(txt)
+	local osc = false
+	for i = 1, #chars do
+		osc = not osc
+		str = str .. '{X:' .. (osc and 'black' or 'inactive') .. ',C:' .. (osc and 'white' or 'black') .. '}' .. chars[i]
+		if i == #chars then
+			str = str .. '{}'
+		end
+	end
+	return str
+end
+
+local function suit_to_uno(suit)
+	suit = string.lower(suit)
+	return suit == 'hearts' and 'red' or suit == 'spades' and 'blue' or suit == 'clubs' and 'green' or suit == 'diamonds' and 'yellow' or 'n/a'
+end
+
+local edited_default_colours = false'''
+position = 'after'
+payload = '''
+-- from cryptid.lua
+SMODS.current_mod.optional_features = {
+	retrigger_joker = true,
+	post_trigger = true,
+	cardareas = {
+		unscored = true,
+		deck = true,
+	},
+	-- Here are some other ones Steamodded has
+	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
+	--[[
+	quantum_enhancements = true,
+	-- These ones add new card areas that Steamodded will calculate through
+	-- Might already be useful for sticker calc
+	cardareas = {
+		discard = true,
+	}
+	]]
+}'''
