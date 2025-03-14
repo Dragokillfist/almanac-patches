@@ -1,7 +1,7 @@
 {
   "id": "alad",
-  "name": "almanac addon",
-  "display_name": "Almanac Addon",
+  "name": "almanac patches",
+  "display_name": "Almanac Patches",
   "author": ["Dragokillfist, TheInterester"],
   "description": "A mod the allows jens almanac to work in the newer versions of steamodded",
   "prefix": "jad",
