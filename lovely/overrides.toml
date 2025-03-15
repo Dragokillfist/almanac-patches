@@ -737,13 +737,13 @@ match_indent = true
 [patches.pattern]
 target = '''=[SMODS jen "Jen.lua"]'''
 pattern = '''function ease_dollars(mod, instant, force_update)
-	if (G.GAME.dollars + mod ~= G.GAME.dollars and math.abs(mod) > (math.abs(G.GAME.dollars) / 1e6)) or force_update then
+	if (G.GAME.dollars + mod ~= G.GAME.dollars and to_big(math.abs(mod)) > to_big((G.GAME.dollars / 1e6))) or force_update then
 		edr(mod,instant)
-	end
-	local should_clamp = jl.invalid_number(number_format(G.GAME.dollars)) or G.GAME.dollars > 1e100 or G.GAME.dollars < -1e100
-	if should_clamp then
-		local set_to = jl.invalid_number(number_format(G.GAME.dollars)) and 1e100 or math.min(math.max(G.GAME.dollars, -1e100), 1e100)
-		set_dollars(set_to)
+		local should_clamp = jl.invalid_number(number_format(G.GAME.dollars)) or to_big(G.GAME.dollars) > to_big(1e100) or to_big(G.GAME.dollars) < to_big(-1e100)
+		if should_clamp then
+			G.GAME.dollars = jl.invalid_number(number_format(G.GAME.dollars)) and 1e100 or math.min(math.max(G.GAME.dollars, -1e100), 1e100)
+			ease_dollars(0, true, true)
+		end
 	end
 end'''
 position = "at"
