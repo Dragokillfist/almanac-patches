@@ -1,2 +1,4 @@
-To play almanac on new calc you will need to remove all listed dependecies from the jen.JSON and update your mods all the relevant mods can be found using the following link
-https://github.com/Dragokillfist/common-balatro-mod-update-links
+## How to install
+- Put this in your mods folder like any other mod
+- Go to the Jen.json file and remove the dependancies or replace it with [this](https://github.com/Dragokillfist/almanac-patches/blob/d000e4778c4fb7dc21ad831eba98fd222c679bbd/example%20Jen.json%20file)
+- report any bugs/crashes
