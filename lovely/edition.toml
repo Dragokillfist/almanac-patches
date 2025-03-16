@@ -1737,3 +1737,221 @@ payload = '''SMODS.Edition{
 	end
 }'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "wee",
+    loc_txt = {
+        name = "Wee",
+        label = "Wee",
+        text = wee_description
+    },
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_wee',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 4,
+    extra_cost = 5,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight * (G.GAME.weeck and 222.22 or 1)
+    end,
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+    key = "wee",
+    no_edeck= true,
+    loc_txt = {
+        name = "Wee",
+        label = "Wee",
+        text = wee_description
+    },
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_wee',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 4,
+    extra_cost = 5,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight * (G.GAME.weeck and 222.22 or 1)
+    end,
+})'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "jumbo",
+    loc_txt = {
+        name = "Jumbo",
+        label = "Jumbo",
+        text = {
+			"All card values are",
+			"{C:attention}multiplied{} by {C:attention}up to 100",
+			"{C:inactive}(If possible)",
+			"{C:inactive,s:1}(May be less effective on some items)",
+			"{C:inactive,E:1,s:0.7}Whoa, it's huge!!{}"
+        }
+    },
+	misc_badge = {
+		colour = G.C.RARITY[4],
+		text = {
+			"Legendary"
+		}
+	},
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local obj = card:gc()
+		if obj.set == 'Booster' or obj.jumbo_mod then
+			modifier = obj.jumbo_mod or 10
+		end
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = modifier, max = modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = 1/modifier, max = 1/modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_jumbo',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 0.8,
+    extra_cost = 12,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+    key = "jumbo",
+    no_edeck = true,
+    loc_txt = {
+        name = "Jumbo",
+        label = "Jumbo",
+        text = {
+			"All card values are",
+			"{C:attention}multiplied{} by {C:attention}up to 100",
+			"{C:inactive}(If possible)",
+			"{C:inactive,s:1}(May be less effective on some items)",
+			"{C:inactive,E:1,s:0.7}Whoa, it's huge!!{}"
+        }
+    },
+	misc_badge = {
+		colour = G.C.RARITY[4],
+		text = {
+			"Legendary"
+		}
+	},
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local obj = card:gc()
+		if obj.set == 'Booster' or obj.jumbo_mod then
+			modifier = obj.jumbo_mod or 10
+		end
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = modifier, max = modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = 1/modifier, max = 1/modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_jumbo',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 0.8,
+    extra_cost = 12,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+})'''
+match_indent = true
