@@ -63,10 +63,7 @@ payload = '''SMODS.Edition({
         return {vars = {self.config.chips, self.config.mult}}
     end,
 	calculate = function(self, card, context)
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {chips = self.config.chips, mult = self.config.mult}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {chips = self.config.chips, mult = self.config.mult}
 		end
 	end
@@ -82,10 +79,7 @@ pattern = '''loc_vars = function(self)
 position = "after"
 payload = ''',
 	calculate = function(self, card, context)
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {chips = self.config.chips, mult = self.config.mult}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {chips = self.config.chips, mult = self.config.mult}
 		end
 	end'''
@@ -157,7 +151,7 @@ payload = '''SMODS.Edition({
         return { vars = { self.config.x_mult, self.config.x_chips, self.config.p_dollars } }
     end,
 	calculate = function(self, card, context)
-		if context.edition and (context.cararea == G.jokers or context.cardarea == G.play) and (context.joker_main or context.main_scoring) then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {x_mult = self.config.x_mult, x_chips = self.config.x_chips, dollars = self.config.p_dollars}
 		end
 	end
@@ -230,10 +224,7 @@ payload = '''SMODS.Edition({
 		return { vars = { self.config.chips, self.config.x_mult } }
 	end,
 	calculate = function(self, card, context)
-		if context.edition and context.cararea == G.jokers and context.joker_main then
-			return {chips = self.config.chips, x_mult = self.config.x_mult}
-		end
-		if context.main_scoring and context.cararea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {chips = self.config.chips, x_mult = self.config.x_mult}
 		end
 	end
@@ -306,16 +297,9 @@ payload = '''SMODS.Edition({
         return { vars = { self.config.retriggers, self.config.chips, self.config.mult } }
     end,
 	calculate = function(self, card, context)
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				retriggers = self.config.retriggers,
-				chips = self.config.chips,
-				mult = self.config.mult
-			}
-		end
-		if context.repetition and context.cardarea == G.play then
-			return {
-				repetitions = self.config.retriggers,
 				chips = self.config.chips,
 				mult = self.config.mult
 			}
@@ -459,7 +443,8 @@ pattern = '''SMODS.Edition({
     end
 })'''
 position = "at"
-payload = '''SMODS.Edition({
+payload = '''--[[
+SMODS.Edition({
     key = "bismuth",
     loc_txt = {
         name = "Bismuth",
@@ -507,7 +492,8 @@ payload = '''SMODS.Edition({
 			}
 		end
 	end
-})'''
+})
+--]]'''
 match_indent = true
 
 [[patches]]
@@ -666,13 +652,7 @@ payload = '''SMODS.Edition({
         return { vars = {self.config.chips, self.config.mult}}
     end,
 	calculate = function(self, card, context)
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {
-				chips = self.config.chips,
-				mult = self.config.mult
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				chips = self.config.chips,
 				mult = self.config.mult
@@ -748,13 +728,7 @@ payload = '''SMODS.Edition{
         return { vars = { self.config.chips, self.config.mult } }
     end,
 	calculate = function(self, card, context)
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {
-				chips = self.config.chips,
-				mult = self.config.mult
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				chips = self.config.chips,
 				mult = self.config.mult
@@ -832,12 +806,7 @@ payload = '''SMODS.Edition{
         return { vars = { self.config.chips } }
     end,
 	calculate = function(self, card, context)
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {
-				chips = self.config.chips
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				chips = self.config.chips
 			}
@@ -916,13 +885,7 @@ payload = '''SMODS.Edition{
 	calculate = function(self, card, context)
 		local chips = self.config.chips
 		local mult = self.config.mult
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {
-				chips = self.config.chips,
-				mult = self.config.mult
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				chips = self.config.chips,
 				mult = self.config.mult
@@ -1001,14 +964,7 @@ payload = '''SMODS.Edition{
 		local chips = self.config.chips
 		local mult = self.config.mult
 		local x_mult = self.config.x_mult
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {
-				chips = self.config.chips,
-				mult = self.config.mult,
-				x_mult = self.config.x_mult
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				chips = self.config.chips,
 				mult = self.config.mult,
@@ -1088,18 +1044,7 @@ payload = '''SMODS.Edition{
 		local e_chips = self.config.e_chips
 		local e_mult = self.config.e_mult
 		local p_dollars = self.config.p_dollars
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
-			return {
-				chips = self.config.chips,
-				mult = self.config.mult,
-				x_chips = self.config.x_chips,
-				x_mult = self.config.x_mult,
-				e_chips = self.config.e_chips,
-				e_mult = self.config.e_mult,
-				p_dollars = self.config.p_dollars
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				chips = self.config.chips,
 				mult = self.config.mult,
@@ -1263,17 +1208,11 @@ payload = '''SMODS.Edition{
 	calculate = function(self, card, context)
 		local chips = self.config.chips
 		local mult = self.config.mult
-		if context.edition and context.cardarea == G.jokers and context.joker_main then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 		return {
 			chips = self.config.chips,
 			mult = self.config.mult
 		}
-		end
-		if context.main_scoring and context.cardarea == G.play then
-			return {
-				chips = self.config.chips,
-				mult = self.config.mult
-			}
 		end
 	end
 }'''
@@ -1416,15 +1355,7 @@ payload = '''SMODS.Edition{
 		local x_chips = self.config.x_chips
 		local mult = self.config.mult
 		local x_mult = self.config.x_mult
-		if context.edition and context.joker_main and context.cardarea == G.jokers then
-			return {
-				chips = self.config.chips,
-				x_chips = self.config.x_chips,
-				mult = self.config.mult,
-				x_mult = self.config.x_mult
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				chips = self.config.chips,
 				x_chips = self.config.x_chips,
@@ -1500,13 +1431,7 @@ payload = '''SMODS.Edition{
 	calculate = function(self, card, context)
 		local x_mult = self.config.x_mult
 		local p_dollars = self.config.p_dollars
-		if context.edition and context.joker_main and context.cardarea == G.jokers then
-			return {
-				x_mult = self.config.x_mult,
-				p_dollars = self.config.p_dollars
-			}
-		end
-		if context.main_scoring and context.cardarea == G.play then
+		if (context.edition and context.cardarea == G.jokers and context.joker_main) or (context.main_scoring and context.cardarea == G.play) then
 			return {
 				x_mult = self.config.x_mult,
 				p_dollars = self.config.p_dollars
@@ -1644,6 +1569,7 @@ pattern = '''SMODS.Edition({
 position = "at"
 payload = '''SMODS.Edition {
     key = "blood",
+    no_edeck = true,
     loc_txt = {
         name = "Blood",
         label = "Blood",
@@ -1810,4 +1736,222 @@ payload = '''SMODS.Edition{
 		end
 	end
 }'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "wee",
+    loc_txt = {
+        name = "Wee",
+        label = "Wee",
+        text = wee_description
+    },
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_wee',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 4,
+    extra_cost = 5,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight * (G.GAME.weeck and 222.22 or 1)
+    end,
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+    key = "wee",
+    no_edeck= true,
+    loc_txt = {
+        name = "Wee",
+        label = "Wee",
+        text = wee_description
+    },
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_wee',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 4,
+    extra_cost = 5,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight * (G.GAME.weeck and 222.22 or 1)
+    end,
+})'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Edition({
+    key = "jumbo",
+    loc_txt = {
+        name = "Jumbo",
+        label = "Jumbo",
+        text = {
+			"All card values are",
+			"{C:attention}multiplied{} by {C:attention}up to 100",
+			"{C:inactive}(If possible)",
+			"{C:inactive,s:1}(May be less effective on some items)",
+			"{C:inactive,E:1,s:0.7}Whoa, it's huge!!{}"
+        }
+    },
+	misc_badge = {
+		colour = G.C.RARITY[4],
+		text = {
+			"Legendary"
+		}
+	},
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local obj = card:gc()
+		if obj.set == 'Booster' or obj.jumbo_mod then
+			modifier = obj.jumbo_mod or 10
+		end
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = modifier, max = modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = 1/modifier, max = 1/modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_jumbo',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 0.8,
+    extra_cost = 12,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+})'''
+position = "at"
+payload = '''SMODS.Edition({
+    key = "jumbo",
+    no_edeck = true,
+    loc_txt = {
+        name = "Jumbo",
+        label = "Jumbo",
+        text = {
+			"All card values are",
+			"{C:attention}multiplied{} by {C:attention}up to 100",
+			"{C:inactive}(If possible)",
+			"{C:inactive,s:1}(May be less effective on some items)",
+			"{C:inactive,E:1,s:0.7}Whoa, it's huge!!{}"
+        }
+    },
+	misc_badge = {
+		colour = G.C.RARITY[4],
+		text = {
+			"Legendary"
+		}
+	},
+	on_apply = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:grow(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local obj = card:gc()
+		if obj.set == 'Booster' or obj.jumbo_mod then
+			modifier = obj.jumbo_mod or 10
+		end
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = modifier, max = modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+	on_remove = function(card)
+		G.E_MANAGER:add_event(Event({blocking = false, blockable = false, func = function()
+			card:shrink(Jen.config.wee_sizemod)
+		return true end}))
+		local modifier = 100
+		local was_added = card.added_to_deck
+		if was_added then
+			card:remove_from_deck()
+		end
+		cry_misprintize(card, {min = 1/modifier, max = 1/modifier}, nil, true)
+		if was_added then
+			card:add_to_deck()
+		end
+	end,
+    shader = false,
+    discovered = true,
+    unlocked = true,
+    config = {twos_scored = 0},
+	sound = {
+		sound = 'jen_e_jumbo',
+		per = 1,
+		vol = 0.5
+	},
+    in_shop = true,
+    weight = 0.8,
+    extra_cost = 12,
+    apply_to_float = false,
+	get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+})'''
 match_indent = true

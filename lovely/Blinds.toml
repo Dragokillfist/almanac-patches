@@ -1,0 +1,68 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS jen "Jen.lua"]'''
+pattern = '''SMODS.Blind	{
+    loc_txt = {
+        name = 'Ahneharka',
+        text = { '+1 Ante per $2 owned,', 'x3 Ante if less than $1 owned' }
+    },
+    key = 'epicox',
+    config = {},
+	showdown = true,
+    boss = {min = 1, max = 10, no_orb = true, showdown = true, hardcore = true, epic = true},
+    boss_colour = HEX("673305"),
+    atlas = 'jenepicblinds',
+    pos = {x = 0, y = 0},
+    vars = {},
+    dollars = 25,
+    mult = 1e9,
+	ignore_showdown_check = true,
+	in_pool = function(self)
+		return G.GAME.round > Jen.config.ante_threshold * 2
+	end,
+    set_blind = function(self, reset, silent)
+		if not reset then
+			local quota = G.GAME.dollars < 1 and (G.GAME.round_resets.ante * 3) or math.floor(G.GAME.dollars/2)
+			G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante+quota)*G.GAME.blind.mult*G.GAME.starting_params.ante_scaling
+			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+			ease_ante(quota)
+			Q(function() G.GAME.round_resets.blind_ante = G.GAME.round_resets.ante; G.GAME.blind:set_text() return true end)
+        end
+    end
+}'''
+position = "at"
+payload = '''SMODS.Blind	{
+    loc_txt = {
+        name = 'Ahneharka',
+        text = { '+1 Ante per $2 owned,', 'x3 Ante if less than $1 owned' }
+    },
+    key = 'epicox',
+    config = {},
+	showdown = true,
+    boss = {min = 1, max = 10, no_orb = true, showdown = true, hardcore = true, epic = true},
+    boss_colour = HEX("673305"),
+    atlas = 'jenepicblinds',
+    pos = {x = 0, y = 0},
+    vars = {},
+    dollars = 25,
+    mult = 1e9,
+	ignore_showdown_check = true,
+	in_pool = function(self)
+		return G.GAME.round > Jen.config.ante_threshold * 2
+	end,
+    set_blind = function(self, reset, silent)
+		if not reset then
+			local quota = to_big(G.GAME.dollars) < to_big(1) and (G.GAME.round_resets.ante * 3) or math.floor(G.GAME.dollars/2)
+			G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante+quota)*G.GAME.blind.mult*G.GAME.starting_params.ante_scaling
+			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+			ease_ante(quota)
+			Q(function() G.GAME.round_resets.blind_ante = G.GAME.round_resets.ante; G.GAME.blind:set_text() return true end)
+        end
+    end
+}'''
+match_indent = true
