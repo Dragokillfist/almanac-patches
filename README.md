@@ -32,7 +32,7 @@ A: You need to fuse together The Pawn of Pandemonium (Leshy’s fusion), The Kni
 
 - Q6: How do I obtain Jen’s sigil?
 
-A: Once you have Kosmos, there is a 1% chance for Jen’s Sigil to appear in an Icon Pack. Each time this chance fails, it will increase by 1%.
+A: Once you have Kosmos, there is a 1/100 chance for Jen’s Sigil to appear in an Icon Pack. Each time this chance fails, the denominator will be decreased by 1, so the second time you open an icon pack it will be 1/99, the third time 1/98 etc.
 
 - Q7: How do I get more Icon packs?
 
