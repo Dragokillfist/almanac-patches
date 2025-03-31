@@ -6,13 +6,13 @@ A: By using Balatro’s Soul. Be aware that this will reset your deck to its bas
 
 A: There are two ways:
 
-1: Balatro’s Soul normally has a ≈0.0665% chance to replace any Soul card. The only way to increase this is by getting many Apollos, with the chance reaching 100% at 42 copies. Once you have 42 Apollos, simply get a Soul to spawn, and it will be guaranteed to be Balatro’s Soul.
+1: Balatro’s Soul normally has a ≈0.0666% chance to replace any Soul card. The only way to increase this is by getting many Apollos, with the chance reaching 100% at 42 copies. Once you have 42 Apollos, simply get a Soul to spawn, and it will be guaranteed to be Balatro’s Soul.
 
 2: Obtain the following items:
 A Soul
 A White Hole
 A Black Hole
-Sagittarius A* (Omega Black Hole)
+A Sagittarius A* (Omega Black Hole)
 A Godsmarble
 Fuse all of these together for a cost of 1e100 money to create Balatro’s Soul.
 
@@ -20,14 +20,14 @@ Fuse all of these together for a cost of 1e100 money to create Balatro’s Soul.
 
 A:Every time the malice goal is met, your operator (the X between the chips and mult counters) increases by one level. This means that chips X mult becomes chips ^ mult, and so on… the current cap is {25.000}
 
-- Q4: How do I increase malice?
+- Q4: How can I increase malice?
 
 A: There are a lot of ways: using/selling cards, leveling up hands, increasing your ante etc.
 If you feel like the next malice goal is too big to reach normally, it might be time to try getting Amalgam, which will greatly increase the speed at which you generate malice.
 
 - Q5: How do I get Amalgam?
 
-A: You need to fuse together The Pawn of Pandemonium (Leshy’s fusion), The Knight of Starvation (Heket’s fusion), The Jester of Epidemics (Kallamar’s fusion), The Arachnid of War (Shamura’s fusion), The Feline of Quietus (Narinder’s fusion), The Reign of Regicide (Lambert’s fusion) and Jen's Sigil. 
+A: You need to fuse together The Pawn of Pandemonium (Leshy’s fusion), The Knight of Starvation (Heket’s fusion), The Jester of Epidemics (Kallamar’s fusion), The Arachnid of War (Shamura’s fusion), The Feline of Quietus (Narinder’s fusion), The Reign of Regicide (Lambert’s fusion) and Jen's Sigil for a cost of 1e100 dollars. 
 
 - Q6: How do I obtain Jen’s sigil?
 
