@@ -1,6 +1,6 @@
 - Q1: How do I obtain Kosmos?
 
-A: By using Balatro’s Soul. Be aware that this will reset your deck to its base state, delete all your jokers, delete all your consumables, set your joker slots to 1, your consumable slots to twenty, and set your money to 4. Basically, the only things you keep are your hand levels and vouchers.
+A: By using Balatro’s Soul. Be aware that doing this will reset your deck to its base state, delete all your jokers, delete all your consumables, set your joker slots to 1, your consumable slots to twenty, and set your money to 4. Basically, the only things you keep are your hand levels and vouchers.
 
 - Q2: How do I obtain Balatro’s Soul?
 
